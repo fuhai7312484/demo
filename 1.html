@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>翻页时钟</title>
+	</head>
+	<style>
+		
+			body{
+				
+				margin: 0;
+			}
+			ul{
+				 margin: 0; padding: 0;
+				 list-style: none;
+			}
+			body{
+				
+				background: url(images/bg.jpg) repeat;
+				
+			}
+			.warp{
+				width: 625px;
+				height: 116px;
+				 border:2px solid #56585a;
+				 background: #21262a;
+				 border-radius:10px;
+				 margin:90px auto ;
+				
+			}
+			.zb{
+				
+				background: url(images/z.jpg) no-repeat;
+				width:59px;
+				height: 62px;
+				float: left;
+				margin: 20px 0 0 10px;
+			}
+			#clock{
+				 width:502px;
+				 height: 98px;  
+				 background: url(images/kuang.jpg) no-repeat;
+				 float: left;
+				 margin-top: 10px;
+				 margin-left: 10px;
+
+			}
+			#clock img{
+				
+				
+			}
+			
+			#clock img:nth-of-type(3){
+				
+				margin:0 25px;
+				
+			}
+			#clock img:nth-of-type(6){
+				
+				margin:0 25px;
+				
+			}
+			
+			#imgList{
+				 margin-left:30px ;
+				 margin-top:15px ;
+				 /*background: #fff;*/
+				 transition: 1s;
+				 overflow: hidden;
+				
+
+			}
+		#imgList li{
+				transform: translateY(0px);
+				width: 45px;
+				height:61px;
+				float: left;
+				margin-left: 10px;
+				 transition:1s;
+				
+				
+			}
+			#imgList span{
+				display: block;
+				float: left;
+				margin: 0 20px;
+				text-align: center;
+			
+			}
+			
+		
+	</style>
+	<body>
+		
+		<div class="warp">
+			<div class="zb">
+			
+				
+			</div>
+			<div id="clock">
+				
+				<ul id="imgList">
+					<li>
+						
+					<img src="images/0.png" />
+					<img src="images/0.png" />
+						
+					</li>
+					
+					<li>
+						
+					<img src="images/0.png" />
+					<img src="images/0.png" />
+						
+					</li>
+					
+					<span class="second">	
+					<img src="images/second1.png" />
+						
+					</span>
+					<li>
+						
+					<img src="images/0.png" />
+					<img src="images/0.png" />
+						
+					</li>
+					
+					<li>
+						
+					<img src="images/0.png" />
+					<img src="images/0.png" />
+						
+					</li>
+					
+						<span class="second">
+						
+					<img src="images/second1.png" />
+						
+					</span>
+						
+					<li>
+						
+					<img src="images/0.png" />
+					<img src="images/0.png" />
+						
+					</li>
+				
+					<li>
+						
+					<img src="images/0.png" />
+					<img src="images/0.png" />
+						
+					</li>
+					
+				<!--<img src="images/0.png" />
+				<img src="images/0.png" />
+				<img src="images/second1.png" />
+				<img src="images/0.png" />
+				<img src="images/0.png" />
+				<img src="images/second1.png" />
+				<img src="images/0.png" />
+					<img src="images/0.png" />
+					<img src="images/1.png" />-->
+					
+			
+					
+				</ul>
+			
+				
+				
+			</div>
+			
+		</div>
+		
+		
+		<script>
+			
+		
+			const imgList = document.getElementById('imgList');
+			const aLi = imgList.getElementsByTagName('li');
+			 let recStr = '000000'
+		
+		
+		imgRoll(Time());
+			timer = setInterval(function(){
+				imgRoll(Time());
+				
+			},1050)
+						
+			function Time(){
+				let d = new Date();
+			let h = d.getHours();
+			let m = d.getMinutes();
+			let s = d.getSeconds();
+			let str = toDou(h)+toDou(m)+toDou(s);		
+//			console.log(str);
+			return str;
+			}
+			
+			
+			function imgRoll(str){
+//			console.log(recStr+'--------老时间')
+//				console.log(str+'---------新时间')
+				for(let i=0;i<aLi.length;i++){		
+				const aLiImgs = aLi[i].getElementsByTagName('img')
+				if(recStr[i] != str[i] ){
+						aLi[i].style.transition = '1s';
+//				console.log(123)
+				//让LI向上走一个图片的位置
+				aLi[i].style.transform = 'translateY(-64px)';
+				//加定时器让他走一次
+				setTimeout(function(){		
+					//li向上滚动的同时把img0的图片变的同时把li再向下拉到0的位置并把图片1的图片变成+1的图片
+				
+					
+					if(recStr[i]*1>=9)recStr[i]='0';
+					
+				let num = recStr[i]*1
+					if(num==9){
+						num=-1;
+						
+					}
+					aLiImgs[1].src = 'images/'+(num+1)+'.png';
+					aLi[i].style.transition = 'none';		
+					aLi[i].style.transform = 'translateY(0)'
+					
+					aLiImgs[0].src = 'images/'+recStr[i]*1+'.png';
+				},1000)	
+				
+			
+				}
+				
+				
+				}	
+				
+					recStr = str;
+				
+			}
+			
+			    function toDou(num){
+				      num = num>9?num:'0'+num;
+				      return num+'';
+				    }
+			
+			
+		</script>
+	</body>
+</html>
