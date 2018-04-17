@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body,h1{
+				margin: 0;
+			}
+			body{
+				
+				background: #eee;
+			
+			}
+			a{
+				text-decoration: none;
+				
+			}
+			.head{
+				
+				 height:420px; width: 735px;
+			background: #eee;
+				position: relative;
+				 
+				
+			}
+			.topBtn h1,.topBtn a{ display: inline-block; margin:0 10px;}
+			#topBtn{
+				 height: 30px;
+				 width: 100px;
+				 background: red;
+				 text-align: center;
+				 line-height: 30px;
+				 color: #fff;
+				  vertical-align:middle;
+				  font-size: 12px;
+				
+			}
+			#box{
+				
+			 width: 100px;
+			 height: 100px;
+			 border:4px;
+				border-style:solid ;
+				border-color:#000 ;
+				background: #fff;
+				margin-top: 50px;
+				transition: 1s;
+			}
+			
+			#mask{
+				 background: rgba(0,0,0,.3);
+				 height: 100%;
+				 width: 100%;
+				 position: absolute;
+				 left: 0;
+				 top: 0;
+				 transition: 3s;
+				 display: none;
+				
+				
+			}
+			.FunKeys{
+				 height: 200px;
+				 width: 300px;
+				  border:20px solid #9c949c;
+				  background: #fff;
+				  position: absolute;
+				  bottom: 30px;
+				  right: 0;
+				
+			}
+			.wapstyle{
+				margin:10px 10px ;
+			}
+			.wapstyle span{
+				 width:36px;
+				 height: 32px;
+				 display: inline-block;
+				border: 1px solid #c0c0c0;
+				 color: #847b84;
+				 background: #efefef;
+				 font-size:12px;
+				 text-align: center;
+				 cursor: pointer;
+				 line-height: 32px;
+				 
+			}
+			.wapstyle a:hover{
+				
+				border: 1px solid #000;
+				
+				
+			}
+			#colorred{
+				
+				background: #9cce00;
+				color: #fff;
+			}
+			#coloryellow{
+				
+				background: yellow;
+					
+			}
+			#colorblue{
+				 background: blue;
+				 color: #fff;
+				
+			}
+			.btns{
+				text-align: center;
+			}
+			
+			.btns a{
+				
+				display: inline-block;
+				width: 60px;
+				height: 30px;
+				color: #fff;
+				margin:0 10px;
+				background: #002952;
+				line-height: 30px;
+				cursor: pointer;
+				
+				
+			}
+			
+		</style>
+	</head>
+	<body>
+		
+			
+			
+		<header class="head">
+			<div class="topBtn">
+				
+				<h1>请为下面的DIV设置样式:</h1>
+				<a href="#" id="topBtn">
+					点击设置
+					
+				</a>
+				
+			</div>
+		
+			
+			<div id="box">
+				
+				
+				
+				
+			</div>
+			
+			<div id="mask">
+				
+				<div class="FunKeys">
+					
+					<div class="wapstyle">
+						请选择背景颜色：
+						<span id="colorred">
+							红
+							
+						</span>
+						<span href=""id="coloryellow">
+							黄
+							
+						</span>
+						<span href=""id="colorblue">
+						蓝
+							
+						</span>
+						
+					</div>
+					
+					
+						<div class="wapstyle">
+						请选择宽度（px）：
+						<span id="width200">
+							200
+							
+						</span>
+						<span id="width300">
+							300
+							
+						</span>
+						<span id="width400">
+						400
+							
+						</span>
+						
+					</div>
+					
+					
+					
+						<div class="wapstyle">
+						请选择高度（px）：
+						<span id="height200">
+							200
+						</span>
+						<span id="height300">
+							300
+							
+						</span>
+						<span id="height400">
+					400
+							
+						</span>
+						
+					</div>
+					
+					<div class="btns">
+							<a id="btnRec">
+						
+						恢复
+					</a>
+					
+					<a id="confirm">
+						
+						
+						确定
+						
+						
+					</a>
+						
+						
+					</div>
+				
+					
+					
+				</div>
+				
+				
+				
+			</div>
+			
+		</header>
+		<script>
+			
+			var topBtn = document.getElementById('topBtn');
+			 var mask = document.getElementById('mask');
+			 var box = document.getElementById('box');
+			 var colorred = document.getElementById('colorred');
+			 var coloryellow = document.getElementById('coloryellow');
+			 var colorblue = document.getElementById('colorblue');
+			 var width200 =document.getElementById('width200');
+			 var width300 = document.getElementById('width300');
+			 var width400 =document.getElementById('width300');
+			 
+			 var height200 =document.getElementById('height200');
+			 var height300 =document.getElementById('height300');
+			 var height400 =document.getElementById('height400');
+			 
+			 
+			 
+			 var confirm = document.getElementById('confirm');
+			
+			topBtn.onclick = function(){
+				
+				mask.style.display = 'block';
+				
+			};
+			
+			
+			confirm.onclick= function(){
+				
+					mask.style.display = 'none';
+				
+			}
+			colorred.onclick = function(){
+				console.log('colorred');
+				box.style.backgroundColor = 'red';
+			};
+			
+			coloryellow.onclick = function(){
+				
+				box.style.backgroundColor = 'yellow';
+				
+			};
+			colorblue.onclick = function(){
+				
+				box.style.backgroundColor = 'blue';
+				
+			};
+		width200.onclick = function(){
+			
+			box.style.width = '200px';
+			
+		}
+		width300.onclick = function(){
+			box.style.width = '300px';
+			
+		}
+		width400.onclick = function(){
+			
+			box.style.width = '400px';
+			
+		}
+		
+		
+		
+				height200.onclick = function(){
+			
+			box.style.height = '200px';
+			
+		}
+		height300.onclick = function(){
+			box.style.height = '300px';
+			
+		}
+		height400.onclick = function(){
+			
+			box.style.height = '400px';
+			
+		}
+			
+			
+			btnRec.onclick = function(){
+				
+				box.style.width = '100px';
+				box.style.height = '100px';
+				box.style.backgroundColor = '#fff';
+				
+//				mask.style.display = 'none';
+				
+				
+				
+			}
+			
+		</script>
+		
+	</body>
+</html>
