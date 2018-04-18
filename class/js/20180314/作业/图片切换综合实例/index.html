@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>图片切换</title>
+		<link rel="stylesheet" type="text/css" href="css/css.css" /> </head>
+
+	<body>
+		<div class="padWrap">
+			<div class="Receiver"> <span class="Recspan">
+			
+			
+			
+			
+		</span> </div>
+			<div class="content">
+				<div class="tabs"> <span class="tabBtn1 article">循环切换</span> <span class="tabBtn2">顺序切换</span> </div>
+				<div class="tabsText"> 图片可以从最后一张跳转到第一张循环切换 </div>
+				<div class="tabsImgBox">
+					<div class="markBox"> <span class="close">
+							
+						
+							
+						</span>
+						<div class="markTitle"> JavaScript提醒 </div>
+						<div class="markInfo"> 已经是最后一张啦~ </div>
+						<div class="markBtnBox">
+							<a class="markBtn"> 确定 </a>
+						</div>
+					</div>
+					<div class="nums"> 1/4 </div> <img src="img/img01.jpg" class="tabImg" />
+					<div class="tabsImgInfo"> 文字描述一 </div>
+					<div class="prevBox"> <span class="prev">
+						
+						
+						
+					</span> </div>
+					<div class="nextBox"> <span class="next">
+						
+						
+						
+					</span> </div>
+				</div>
+			</div>
+			<div class="footHome"> <img src="img/miaov.png" alt="" /> </div>
+		</div>
+		<script>
+			var tabBtn1 = document.querySelector('.tabBtn1');
+			var tabBtn2 = document.querySelector('.tabBtn2');
+			var tabsText = document.querySelector('.tabsText');
+			var prev = document.querySelector('.prev');
+			var next = document.querySelector('.next');
+			var tabImg = document.querySelector('.tabImg')
+			var nums = document.querySelector('.nums')
+			var markBox = document.querySelector('.markBox');
+			var markBtn = document.querySelector('.markBtn');
+			var tabsImgInfo = document.querySelector('.tabsImgInfo');
+			var close = document.querySelector('.close');
+			var markInfo = document.querySelector('.markInfo');
+			let inv = true;
+			let off = true;
+			let timer;
+			var ImgArr = ["img/img01.jpg", "img/img02.jpg", "img/img03.jpg", "img/img04.jpg"];
+			var arr = ["文字描述一", "文字描述二", "文字描述三", "文字描述四"];
+			let len = ImgArr.length
+			let num = 0
+			
+				tabBtn1.onclick = () => {
+					if(off){
+					tabBtn1.classList.add('article')
+					tabBtn2.classList.remove('article');
+					tabsText.innerHTML = '图片可以从最后一张跳转到第一张循环切换'
+					inv = true;
+					}
+					
+				}
+				tabBtn2.onclick = () => {
+					if(off){
+					tabBtn2.classList.add('article')
+					tabBtn1.classList.remove('article');
+					tabsText.innerHTML = '图片只能到最后一张或只能到第一张切换'
+					inv = false;
+					}
+				}
+				
+				timer = setInterval(function(){
+					
+					numAdd()
+					
+				},3000)
+				
+				prev.onclick = () => {
+					
+				numSub()
+			}
+				
+		
+				next.onclick = () => {
+					numAdd()
+					
+				}
+				
+				function numAdd(){
+					
+						if(off){
+							num++
+					if(inv) {
+						if(num > len - 1) num = 0
+					} else {
+						if(num > len - 1) {
+							num = num - 1;
+							markTip();
+								off = false;
+						}
+					}
+					ImgTab();
+				}
+					
+				}
+				
+				
+						
+				function numSub(){
+					if(off){
+					num--;
+					if(inv) {
+						if(num < 0) num = len - 1;
+					} else {
+						if(num < 0) {
+							num = 0
+							markTip();	
+							off = false;
+						}
+					}
+					ImgTab();
+				}
+					}
+
+			function ImgTab() {
+				tabImg.src = ImgArr[num];
+				tabsImgInfo.innerHTML = arr[num]
+				nums.innerHTML = (num + 1) + '/' + ImgArr.length
+			}
+
+			function markTip() {
+				markBox.style.display = 'block';
+
+			}
+			
+		close.onclick=markBtn.onclick = ()=>{	
+				markBox.style.display = '';
+					off = true;	
+				}
+				
+			//			tabBtn1.onclick = function() {
+			//				tabBtn2.classList.remove('article');
+			//				tabBtn1.classList.add('article');
+			//				tabsText.innerHTML = '图片可以从最后一张跳转到第一张循环切换';
+			//				var a = 1;
+			//				prev.onclick = function() {
+			//					a--;
+			//					if(a < 1) a = 4;
+			//					tabImg.src = 'img/img0' + a + '.jpg';
+			//					nums.innerHTML = a + '/4';
+			//					tabsImgInfo.innerHTML = arr[a - 1];
+			//				}
+			//				next.onclick = function() {
+			//					a++;
+			//					if(a > 4) a = 1
+			//					tabImg.src = 'img/img0' + a + '.jpg';
+			//					nums.innerHTML = a + '/4';
+			//					tabsImgInfo.innerHTML = arr[a - 1];
+			//				}
+			//			}
+			//			tabBtn2.onclick = function() {
+			//				tabBtn1.classList.remove('article');
+			//				tabBtn2.classList.add('article');
+			//				tabsText.innerHTML = '图片只能到最后一张或只能到第一张切换';
+			//				var a = 1;
+			//				close.onclick = function() {
+			//					markBox.style.display = 'none';
+			//				}
+			//				prev.onclick = function() {
+			//					a--;
+			//					if(a < 1) a = 1;
+			//					tabImg.src = 'img/img0' + a + '.jpg';
+			//					nums.innerHTML = a + '/4';
+			//					tabsImgInfo.innerHTML = arr[a - 1];
+			//					if(a == 1) {
+			//						markBox.style.display = 'block';
+			//						markInfo.innerHTML = '已经是第一张啦~';
+			//					}
+			//				}
+			//				next.onclick = function() {
+			//					a++;
+			//					if(a > 4) a = 4
+			//					tabImg.src = 'img/img0' + a + '.jpg';
+			//					nums.innerHTML = a + '/4';
+			//					tabsImgInfo.innerHTML = arr[a - 1];
+			//					if(a == 4) {
+			//						markBox.style.display = 'block';
+			//						markInfo.innerHTML = '已经是最后一张啦~';
+			//					}
+			//					markBtn.onclick = function() {
+			//						markBox.style.display = 'none';
+			//					}
+			//				}
+			//			}
+		</script>
+	</body>
+
+</html>
