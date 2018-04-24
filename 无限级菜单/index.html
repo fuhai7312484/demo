@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title></title>
+		<style>
+			html {
+				width: 100%;
+				height: 100%;
+			}
+			
+			/*h4{ margin: 0;
+			padding: 0;}*/
+			body {
+				margin: 0px;
+				width: 100%;
+				height: 100%;
+			}
+			
+			.main {
+				width: 100%;
+				height: 100%;
+				background: url(./image/bg.png) no-repeat;
+				background-size: 100% 100%;
+				overflow: hidden;
+			}
+			
+			.logo {
+				display: block;
+				width: 200px;
+				height: 55px;
+				background: url(./image/logo.png) no-repeat;
+				margin: 20px auto;
+			}
+			
+			ul {
+				list-style: none;
+				font-size: 22px;
+				color: #8c949c;
+				font-weight: bold;
+			}
+			
+			ul li {
+				position: relative;
+				padding-left: 10px;
+			}
+			
+			ul li div {
+				height: 98%;
+				width: 1px;
+				border-left: 1px dotted #ccc;
+				position: absolute;
+				left: 14px;
+				top: 18px;
+			}
+			
+			ul ul {
+				display: none;
+			}
+			
+			ul li span {
+				display: block;
+				line-height: 32px;
+				padding-left: 15px;
+				background: url(./image/icon.png) no-repeat left 500px;
+				/*width: 20px;*/
+				height: 20px;
+				float: left;
+			}
+			
+			ul li span.add {
+				background-position: 0px -32px;
+			}
+			
+			ul li span.line {
+				background-position: 0px 11px;
+			}
+			
+			.tree {
+				margin-left: 300px;
+			}
+			h4{
+				cursor:pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="main">
+			<a href="http://www.miaov.com" class="logo"></a>
+			<div class="tree">
+				<ul id="oUl"> </ul>
+			</div>
+		</div>
+		<script>
+			var arr = [{
+				title: "第一级菜单",
+				child: [{
+					title: "第二级菜单"
+				}, {
+					title: "第二级菜单",
+					child: [{
+						title: "第三级菜单"
+					}, {
+						title: "第三级菜单",
+						child: [{
+							title: "第四级菜单"
+						}, {
+							title: "第四级菜单"
+						}, {
+							title: "第四级菜单"
+						}]
+					}, {
+						title: "第三级菜单"
+					}]
+				}, {
+					title: "第二级菜单",
+					child: [{
+						title: "第三级菜单"
+					}, {
+						title: "第三级菜单"
+					}]
+				}]
+			}, {
+				title: "第一级菜单",
+				child: [{
+					title: "第二级菜单"
+				}, {
+					title: "第二级菜单",
+					child: [{
+						title: "第三级菜单"
+					}, {
+						title: "第三级菜单",
+						child: [{
+							title: "第四级菜单"
+						}, {
+							title: "第四级菜单"
+						}, {
+							title: "第四级菜单"
+						}]
+					}, {
+						title: "第三级菜单"
+					}]
+				}, {
+					title: "第二级菜单",
+					child: [{
+						title: "第三级菜单"
+					}, {
+						title: "第三级菜单"
+					}]
+				}]
+			}, {
+				title: "第一级菜单",
+				child: [{
+					title: "第二级菜单"
+				}, {
+					title: "第二级菜单",
+				}, {
+					title: "第二级菜单",
+					child: [{
+						title: "第三级菜单"
+					}, {
+						title: "第三级菜单"
+					}]
+				}]
+			}];;
+			
+			//自己执行取数据开始
+			(function() {
+				//获取最外级ul
+				const oUl = document.getElementById('oUl');
+				//初始化执行生成元素函数
+				create(oUl, arr);
+				//给生成的数据结构写行为
+				Unfold()
+				//创建各个元素函数
+				function create(oUl, arr) {
+					for(let i = 0; i < arr.length; i++) {
+						//创建最初父级li
+						let ali = document.createElement('li');
+						//创建li里h4标题
+						let aH4 = document.createElement('h4');
+						//给h4标题添加内容
+						aH4.innerHTML = `${arr[i].title}`;
+						//将创建的h4标签和内容添加到创建的li里
+						ali.appendChild(aH4);
+						//判断是否还有下一级菜单如果有执行下面if
+						if(arr[i].child) {
+							//创建子级ul
+							let childUl = document.createElement('ul');
+							//递归给子级ul创建子级的li和h4
+							create(childUl, arr[i].child)
+							//给子级h4添加title内容
+							aH4.innerHTML = `<span class='add'></span><div></div>${arr[i].title}`;
+						//把创建的子级li和h4添加到子ul里
+							ali.appendChild(childUl);
+						}
+						//把递归创建和生成的所有内容写进oUl大box里
+						oUl.appendChild(ali);
+					}
+				}
+			})();
+
+			function Unfold() {
+				//获取所有生成的h4标签
+				const Btns = document.querySelectorAll('h4');
+				for(let i = 0; i < Btns.length; i++) {
+					//给所有获取的h4标签添加点击事件
+					Btns[i].onclick = function() {
+						//获取当前h4按钮的下一个兄弟元素节点
+						let ul = this.nextElementSibling;
+						//判断当前h4按钮下的所有兄弟节点是否有下级菜单
+						if(ul) {
+							//获取当前h4按钮的父级的父级的ul
+							var uls = this.parentNode.parentNode.getElementsByTagName("ul");
+						//循环h4按钮的父级的父级的所有ul
+						   for(var i = 0; i < uls.length; i++) {
+						   	//判断当前兄弟节点的父级的父级ul  不等当前节点
+								if(uls[i] != ul) {
+									//不是当前节点的ul全部的display为none
+									uls[i].style.display = "none"; 
+                               //	并且给当前所有的兄弟节点的添加加号
+									uls[i].previousElementSibling.children[0].className ='add';
+								}
+							}
+							//判断当前节点display是否为none
+							if(getComputedStyle(ul)['display'] == "none") {
+								//如果是none添加成block
+								ul.style.display = "block";
+								//并且让这个的子级span为减号
+								  this.children[0].className ='line';
+							} else {
+								//否则ul的display为none
+								ul.style.display = "none";
+								//并且让这个的子级的添加加号
+								this.children[0].className ='add';
+							}
+						}
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>
