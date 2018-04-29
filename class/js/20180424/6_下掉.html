@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+ul{}
+ul li{
+    width:50px;
+    height:50px;
+    float: left;
+    margin: 5px;
+    background: red;
+    transition: .5s;
+}
+
+/*.div {
+	float:left;
+	width:50px;
+	height:50px;
+	background:red;
+	margin-left:15px;
+	position:relative;
+	top:0px;
+}*/
+
+</style>
+</head>
+<body>
+    <ul id="ul">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    
+<script>
+	
+
+
+	
+//	--------------------------上面是练习------------------------------
+  
+  
+  const oul = document.getElementById('ul');
+ 
+  let str = '';
+  let size = 300;
+  oul.onclick = function(ev){
+  	str = !str?'translateY('+size+'px)':'';
+  
+  	if(ev.target.tagName === 'LI'){	
+     ev.target.style.transform = str;
+     next(ev.target,str)
+     prev(ev.target,str)
+  	}	
+  }
+  
+  function next(el){
+ 
+  	if(el.nextElementSibling){
+  		setTimeout(function(){
+  			el.nextElementSibling.style.transform = str;
+  			next(el.nextElementSibling)
+  			},100)
+  		}
+
+  }
+  function prev(el){
+  	
+  	if(el.previousElementSibling){
+  		setTimeout(function(){
+  			el.previousElementSibling.style.transform = str;
+  			prev(el.previousElementSibling)
+  		},100)
+  	}
+  }
+  
+  
+  
+  
+
+// let num = 0;
+//  let lis = ul.children;
+//  function next(ele){
+//  	setTimeout(function() {
+//  	
+//		    	if(ele.nextElementSibling){
+//		    		
+//		    		ele.nextElementSibling.style.transform = 'translateY(300px)';
+//		    		next(ele.nextElementSibling)
+//		    	}
+//  	},100)
+//  	
+////clearInterval(timer);
+//  }
+//
+//      function prev(ele){
+//  	setTimeout(function() {
+//  	
+//		    	if(ele.previousElementSibling){
+//		    		ele.previousElementSibling.style.transform = 'translateY(300px)';
+//		    		prev(ele.previousElementSibling)
+//		    	}
+//  	},100)
+//		  }
+//  
+//  
+//  for(let i=0;i<lis.length;i++){
+//  	 lis[i].index = true
+//   lis[i].onclick = function(){
+// 		lis[i].style.transform = 'translateY(300px)';
+//   	next(this)
+//   	prev(this)	
+//   }	
+//  }
+//  function next(ele){
+//  	let next = ele.nextElementSibling;
+//  	 next.style.transform = 'translateY(300px)';
+//  	
+//  }
+    
+//  document.onclick = function(){
+//      timer = setInterval(function(){
+//          lis[num].style.transform = 'translateY(300px)'
+//          num ++;
+//      },100);
+////      clearInterval(timer);
+//getStyle(lis[num]);
+//
+//  }
+    
+
+</script>
+</body>
+</html>
