@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			
+			.name-field {
+    margin-top: 10px
+}
+
+.email-field {
+    margin-top: 3px
+}
+
+.pwd-field {
+    margin-top: 10px
+}
+
+.pwd2-field {
+    margin-top: 10px
+}
+
+.register label {
+    float: left;
+    width: 80px;
+    margin-right: 10px;
+    text-align: right
+}
+
+.register .name_msg,
+.register .psw_msg,
+.register .psw2_msg,
+.register .email_msg {
+    margin-left: 10px;
+    display: none
+}
+
+.intensity,
+#count {
+    padding-left: 90px;
+    margin-top: 3px
+}
+
+#count {
+    visibility: hidden;
+    color: #999;
+    font-size: 12px
+}
+
+.intensity span {
+    display: inline-block;
+    background: #FBAA51;
+    width: 55px;
+    height: 20px;
+    text-align: center
+}
+
+.intensity .active {
+    background: rgba(0, 128, 0, 0.61)
+}
+
+.register .submitBtn {
+    width: 163px;
+    margin: 10px 0 0 90px
+}
+
+#submit {
+    color: #555
+}
+			
+		</style>
+	</head>
+	<body>
+		<form id="form">
+   <div class="name-field">
+        <label>用户名</label>
+        <input type="text" id="name" autofocus requiered/><span class="msg name_msg"><i class="fa fa-lightbulb-o"> 5-25个字符，1个汉字为两个字符，推荐使用中文会员名</i></span>
+        <div id="count">0个字符</div>
+   </div>
+   <div class="email-field" requiered>
+        <label>邮箱</label>
+       <input type="text" id="email" /><span class="msg email_msg"></span>
+       </div>
+   <div class="pwd-field" requiered>
+        <label>密码</label>
+        <input type="password" id="psw" /><span class="msg psw_msg"></span>
+        <div class="intensity">
+            <span class="active">弱</span><span>中</span><span>强</span>
+       </div>
+   </div>
+   <div class="pwd2-field" requiered>
+        <label>确认密码</label>
+        <input type="password" id="psw2" disabled="" /><span class="msg psw2_msg">请再次输入</span>
+   </div>
+   <button type="submit" id="submit" disabled="" class="submitBtn">注册</button>
+</form>
+<script>
+	function register() {
+    var oName = document.getElementById("name");
+    var count = document.getElementById("count");
+    var psw = document.getElementById("psw");
+    var psw2 = document.getElementById("psw2");
+    var email = document.getElementById("email");
+    var name_msg = document.getElementsByClassName("name_msg")[0];
+    var psw_msg = document.getElementsByClassName("psw_msg")[0];
+    var psw2_msg = document.getElementsByClassName("psw2_msg")[0];
+    var email_msg = document.getElementsByClassName("email_msg")[0];
+    var psw = document.getElementById("psw");
+    var psw2 = document.getElementById("psw2");
+    var intensity = getByClass("intensity")[0].getElementsByTagName("span");
+    var registerbtn = document.getElementById("submit");
+    var oName_state = false;
+    var email_state = false;
+    var psw_state = false;
+    var psw2_state = false;
+    var name_length = 0;
+
+    oName.onfocus = function() {
+        name_msg.style.display = "inline-block";
+    }
+    oName.onkeyup = function() {
+        count.style.visibility = "visible";
+        name_length = getLength(this.value);
+        count.innerHTML = name_length + "个字符";
+        if (name_length == 0) {
+            count.style.visibility = "hidden";
+        }
+    }
+    oName.onblur = function() {
+        //含有非法字符 不能为空 长度超25 长度少于6个字符
+        var re = /[^\w\u4e00-\u9fa5]/g;
+        if (re.test(this.value)) {
+            name_msg.innerHTML = "<i class='fa fa-close'>含有非法字符</i>";
+            oName_state = false;
+        } else if (this.value == "") {
+            name_msg.innerHTML = "<i class='fa fa-close'>不能为空</i>";
+            oName_state = false;
+        } else if (name_length > 25) {
+            name_msg.innerHTML = "<i class='fa fa-close'>不能超出25个字符</i>";
+            oName_state = false;
+        } else if (name_length < 6) {
+            name_msg.innerHTML = "<i class='fa fa-close'>不能少于6个字符</i>";
+            oName_state = false;
+        } else {
+            name_msg.innerHTML = "<i class='fa fa-check-square'>OK!</i>";
+            oName_state = true;
+        }
+        checkform();
+    }
+
+    psw.onfocus = function() {
+        psw_msg.style.display = "inline-block";
+        psw_msg.innerHTML = "<i class='fa fa-lightbulb-o'>6-16个字符，不能单独使用字母、数字或符号</i>"
+    }
+    psw.onkeyup = function() {
+        if (this.value.length > 5) {
+            intensity[1].className = "active";
+            psw2.removeAttribute("disabled");
+            psw2_msg.style.display = "inline-block";
+        } else {
+            intensity[1].className = "";
+            psw2.setAttribute("disabled", "");
+            psw2_msg.style.display = "none";
+        }
+        if (this.value.length > 10) {
+            intensity[2].className = "active";
+            psw2.removeAttribute("disabled");
+            psw2_msg.style.display = "inline-block";
+        } else {
+            intensity[2].className = "";
+        }
+    }
+    psw.onblur = function() {
+        //不能为空 不能相同字符 长度6-16 不能全数字 不能全字母 
+        var m = findStr(psw.value, psw.value[0]);
+        var re_n = /[^\d]/g;
+        var re_t = /[^a-zA-Z]/g;
+        if (this.value == "") {
+            psw_msg.innerHTML = "<i class='fa fa-close'>不能为空</i>";
+            psw_state = false;
+        } else if (m == this.value.length) {
+            psw_msg.innerHTML = "<i class='fa fa-close'>不能为相同字符</i>";
+            psw_state = false;
+        } else if (this.value.length < 6 || this.value.legth > 16) {
+            psw_msg.innerHTML = "<i class='fa fa-close'>长度应为6-16个字符</i>";
+            psw_state = false;
+        } else if (!re_n.test(this.value)) {
+            psw_msg.innerHTML = "<i class='fa fa-close'>不能全部为数字</i>";
+            psw_state = false;
+        } else if (!re_t.test(this.value)) {
+            psw_msg.innerHTML = "<i class='fa fa-close'>不能全部为字母</i>";
+            psw_state = false;
+        } else {
+            psw_msg.innerHTML = "<i class='fa fa-check-square'>OK!</i>";
+            psw_state = true;
+        }
+        checkform();
+    }
+
+
+    psw2.onblur = function() {
+        if (psw2.value != psw.value) {
+            psw2_msg.innerHTML = "<i class='fa fa-close'>两次输入不一致</i>";
+            psw2_state = false;
+        } else {
+            psw2_msg.innerHTML = "<i class='fa fa-check-square'>OK!</i>";
+            psw2_state = true;
+        }
+        checkform();
+    }
+
+    email.onblur = function() {
+        var re_e = /^[\w_\-\.]+@[\w]+\.([\w]{2,4})$/g;
+        if (!re_e.test(this.value)) {
+            email_msg.innerHTML = "<i class='fa fa-close'>请输入正确的邮箱格式</i>";;
+            email_state = false;
+        } else {
+            email_msg.innerHTML = "<i class='fa fa-check-square'>OK!</i>";
+            email_state = true;
+        }
+        checkform();
+    }
+    function checkform() {
+        if (oName_state && oName_state && psw_state && psw2_state) {
+            registerbtn.removeAttribute("disabled");
+            // registerbtn.className+=" "+"readySubmit";
+            $("#submit").addClass("readySubmit");
+        } else {
+            registerbtn.setAttribute("disabled", "");
+            //registerbtn.className = registerbtn.className.replace( new RegExp( "(\\s|^)" + "readySubmit" + "(\\s|$)" ), " " );  
+            // registerbtn.className = registerbtn.className.replace( /(\s|^)readySubmit(\s|$)/g, " " );       
+            $("#submit").removeClass("readySubmit");
+        }
+    }
+}
+
+function getLength(str) {
+    return str.replace(/[^\x00-xff]/g, "xx").length;
+}
+
+function findStr(str, n) {
+    var temp = 0;
+    for (var i = 0; i < str.length; i++) {
+        if (str.charAt(i) == n) {
+            temp++;
+        }
+    }
+    return temp;
+}
+</script>
+	</body>
+</html>

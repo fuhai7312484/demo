@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			#contain {
+				width: 400px;
+				height: 400px;
+				border: 1px solid yellowgreen;
+				border-radius: 20px;
+				margin: 20px auto;
+				padding: 60px 30px 30px 30px;
+				box-sizing: border-box;
+			}
+			
+			#contain div {
+				margin-bottom: 30px;
+			}
+			
+			#contain div span {
+				font-size: 20px;
+				color: #555;
+				width: 80px;
+				display: inline-block;
+			}
+			
+			#contain div input {
+				width: 200px;
+				height: 30px;
+				outline: none;
+				padding-left: 20px;
+				font-size: 16px;
+				border-radius: 5px;
+				border: 1px solid yellowgreen;
+			}
+			
+			#btn {
+				display: block;
+				outline: none;
+				width: 100px;
+				height: 40px;
+				border: 1px solid yellowgreen;
+				background-color: #fff;
+				border-radius: 10px;
+				font-size: 20px;
+				margin: 20px auto;
+				cursor: no-drop;
+				color: #555;
+			}
+			
+			#contain .ok {
+				border-color: yellowgreen;
+			}
+			
+			#contain .error {
+				border-color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="contain">
+			<div id="qq"> <span>QQ：</span> <input type="text" name="qq" placeholder="请输入QQ"> </div>
+			<div id="email"> <span>Email：</span> <input type="text" name="email" placeholder="请输入邮箱"> </div>
+			<div id="mobile"> <span>Mobile：</span> <input type="text" name="phone" placeholder="请输入手机号码"> </div>
+			<div id="date"> <span>Date：</span> <input type="text" name="birth" placeholder="请输入生日"> </div>
+			<p><input type="submit" value="注册" id="btn"></p>
+		</div>
+		<script>
+			const qq = document.getElementById('qq')
+			const qInput = qq.querySelectorAll('input')[0]
+			const btn = document.getElementById('btn')
+			const email = document.getElementById('email');
+			const eInput = email.querySelectorAll('input')[0];
+			const mobile = document.getElementById('mobile');
+			const mobInput = mobile.querySelectorAll('input')[0]
+			const dateId = document.getElementById('date')
+			const dateInput = dateId.querySelectorAll('input')[0]
+			let testArr = {
+					"qq":{
+						"checked":false
+					},
+					"email":{
+						"checked":false
+					},
+					"mobile":{
+						"checked":false
+					},
+					"Ddata":{
+						"checked":false
+					}
+			}
+
+			let qVal = '';
+			qInput.onkeyup = QQTest;
+			eInput.onkeyup = emTest;
+			mobInput.onkeyup = mobTest;
+			dateInput.onkeyup = dateTest;
+			
+			//qq号验证
+			function QQTest() {
+				/*
+				 qq验证要求
+				 1.第一位不能为0
+				 2.必须是5-12位的数字组成
+				 * 
+				 * */
+				let qVal = qInput.value
+				if(/^[1-9]\d{4,11}$/.test(qVal)) {
+					qInput.style.border = ''
+					testArr["qq"].checked = true
+					checkform()
+				} else {
+					qInput.style.border = '1px solid red'
+					
+				
+				}
+			}
+			//邮箱验证
+			function emTest() {
+				let emVal = eInput.value
+				/*
+				 *1.邮箱第一个字符不能为0
+				 * 2.6~18个字符，可使用字母、数字、下划线，需以字母开头
+				 * 3.必须带有@字符和.com 或者.cn 或者.com.cn 
+				 * 
+				 * 
+				 * */
+				//	console.log(emVal.match(/^[A-Za-z]{1}\w[A-Za-z0-9]{4,18}@[0-9a-z]{2,8}(\.com|\.cn|\.com.cn|\.net)$/))
+				if(/^[A-Za-z]{1}\w[A-Za-z0-9]{4,18}@[0-9a-z]{2,8}(\.com|\.cn|\.com.cn|\.net)$/.test(emVal)) {
+					eInput.style.border = ''
+					testArr["email"].checked = true
+//					
+					checkform()
+					
+				} else {
+					eInput.style.border = '1px solid red';
+					emCheck = false
+				
+				}
+			}
+			//手机号验证
+			function mobTest() {
+				/*
+				 * 手机号验证
+				 * 1.手机号必须是11位以内的数字
+				 * 2.首数字必须是1
+				 * 3.第二位可为3,4,5,7,8,中的任意一位；
+				 * 
+				 * */
+				let mobVal = mobInput.value
+				//	console.log(mobVal.match(/^1[34578]\d{9}$/))
+				if(/^1[34578]\d{9}$/.test(mobVal)) {
+					mobInput.style.border = ''
+					testArr["mobile"].checked = true
+					checkform();
+				} else {
+					mobInput.style.border = '1px solid red'
+				}
+			}
+			//生日验证
+		 function dateTest(){
+		 	/*
+		 	 * 2018-02-30
+		 	 *年月日
+		 	 * 
+		 	 * 
+		 	 * */
+			let dateVal = dateInput.value;
+				if(/^([12][0-9][0-9]{2})\D+(0[1-9]|1[0-2])\D+(0[1-9]|[12][0-9]|3[01])$/.test(dateVal)){
+					dateInput.style.border = ''
+					testArr["Ddata"].checked = true
+					checkform();
+				}else{
+					dateInput.style.border = '1px solid red'
+				}
+			}
+			function checkform() {
+				let checkArr = [];
+				for(attr in testArr){
+					checkArr.push(testArr[attr])
+				}
+				console.log(checkArr)
+			btn.style.cursor = checkArr.every(e=>e.checked)?'pointer':'no-drop';
+			}
+		</script>
+	</body>
+
+</html>
