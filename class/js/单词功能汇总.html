@@ -9,10 +9,9 @@
 		var 变量声明
 		const  常量声明
 		function 函数声明
-		
-		
 		undefined 未定义   
 		console.log 打印         
+		alert()弹出提示 (会阻塞代码)
 	    document 文档
 		getElementById  以ID的形式获取元素
 		getElementsByTagName 以元素标签的形式获取元素 得出的是类数组形式集合(注意：Elements加s)
@@ -20,6 +19,7 @@
 		querySelector 以ID或class的形式来回去ID（注意：只是静态获取）
 		querySelectorAll 以ID、class或者TagName的形式获取一组元素（注意：只是静态获取）
 		innerHTML 元素标签内的内容
+		innerText 打印标签之间的纯文本信息，会将标签过滤掉，低版本的火狐浏览器不支持，而是支持textContent
 		length 长度
 		
 		el.classList 获取元素身上的所有的className 的列表
@@ -28,7 +28,7 @@
 		el.classList.toggle 显示或者隐藏class（toggle切换的意思）
 		true 代表真  false 代表假
 		if(){}else if(){}else{} 如果...否则如果...否则...
-		switch...case... break 基于不同的条件来执行不同的动作
+		switch(el){case 1 : break;case 2 : break;} 基于不同的条件来执行不同的动作
 		for(循环的初始化条件){添加满足后需要执行的代码}
 		while(){}循环
 		break 中断结束循环或判断
@@ -40,6 +40,12 @@
 		Boolean 布尔
 		String  字符串
 		Symbol 符号
+		--什么时候会出现undefined
+	 		1.有变量未赋值
+            2.函数默认返回值
+            3.某个对象没有这个属性
+            4.undefined
+            5.没有传入实参
 		引用数据类型
 		{}object 对象
 		[]数组
@@ -82,10 +88,136 @@
 		trim 去除字符串空白 str.trimLeft()(去掉左边空白)   str.trimRight()(去掉右边的空白)
 		
 		JSON格式方法
+		标准JSON '{"key":"value"}','["key":"value"]'
+		         '{"key":number}','["key":number]' //value 是数字类型的可以不用加" "引号
 		JSON.parse() （parse解析的意思） 将一个 JSON 字符串转换为对象。 返回值是一个对象
-		JSON.stringify 将一个json转换成字符串
+		JSON.stringify 将一个json转换成字符串 
+		IE9以下不兼容以上两种方法
+		解决方法：1.可以引用josn2.js
+		 	   2.或者用eval
+		 eval：能够尽可能的把字符串转换成js可执行的代码
+		 	*例：eval('alert(1+2)')  会弹出3
+		
+		对象格式 写法  { key:value}
 		
 		数组方法
+		第一种写法 var arr = new Array("ele","ele",..."ele") 创建一个新数组 
+		第二种写法 var arr = ["ele","ele","ele"]; 创建数组的方法
+		
+		添加删除类
+		arr.pop()删除数组最后一位  返回值是最后一个被删除的值
+		arr.push(el,el)向数组最后一位添加值或者多个数据 参数为需要添加到数组里的内容  返回值为修改后数组的长度
+		arr.shift()删除数组中第一项 返回值为删除的那一位，如果数组为空则返回 undefined
+		arr.unshift(el,el)向首位添加一个或者多个值， 返回值是新数组的长度
+		arr.concat(el,el,arr1,arr2)将多个数据或者两个或多个数组连接在一起，
+		                  例如var a = [1,2,3]; document.write(a.concat(4,5,[6,7]));//输出结果是 [1,2,3,4,5,[6,7]]
+            截取类（替换、删除）
+    	arr.slice(起始位置下标（包括起始）,结束位置->(不包括结束位置)) 从原数组提取出【起始位置下标开始--结束位置下标结束】的值组成的新的数组，返回值为新数组
+    	      *注->1.只传一个参数：只传起始下标 表示原数组从起始下标开始后面的数据全部在内，组成一个新的数组
+    	      	  2.两参：返回 起始下标(包括起始),结束下标(不包括结束位置) 组成的新数组
+    	      	  3.两参：起始下标(包括起始),结束下标是负数 则负数需要加上数组的长度来替换该位置.
+    	      	  4.两参：两个参数都是负数时，所有的都加上数组的长度转换成正数
+  	    arr.splice()可以对数组进行 删除、插入、替换  很强大的数组用法 
+  	           *注    删除：两参，可以删除任意项，只需要指定2个参数 ，arr.splice(开始位置,要删除的个数) 例如：arr.splice(0,2)第0位开始，删除两个
+				        插入:三参，可以向指定位置插入任意数量的项，需要提供3个参数,arr.splice(开始位置,要删除的个数,要插入的值) 
+				                    例如：splice(2,0,4,6) 从数组的第2位开始 0为不删除,插入4和6
+	                                             替换：三参或多参，可向指定位置 删除 并且插入值，需要提供3或多个参数，arr.splice(开始位置,要删除的个数,要插入的值)
+	                                                         例如，splice (2,1,4,6)	从数组第2位开始，删除1个 插入数据4和6
+	 拼接类
+	 arr.join('拼接符')将数字的值利用指定的连接符拼接在一起，参数如果是空这直接以“ , ”拼接, 原数组不变
+	     查询类                                       
+       	arr.indexOf(要查找的值,开始查找位置的索引(可选))从前往后查找， 第二个参数 有填写就从参数开始往后查找 ---没参数就从数组的开头开始查找 (返回值为要查找的值在数组中的位置 没有找到返回-1)
+       	arr.lastIndexOf(要查找的值,开始查找的索引(可选))从后往前查找 (返回值为要查找的值在数组中的位置 没有找到返回-1)
+       	arr.find(function(e,index,all){})查询数组中符合条件的数据，并抠出来 返回值为符合条件的第一个元素的值
+       	arr.findIndex(function(e){})在数组中找目标元素，找到就返回目标的索引值，找不到返回-1
+       	arr.inclueds(index)利用索引值查找当前数组里是否有这个值， 返回值为布尔着 true或者false
+       	   *例：let site = ['runoob', 'google', 'taobao']; site.inclueds('runoob');//返回值  true
+       	Array.isArray(arr)判断某个值是否为数组，返回布尔值
+             遍历数组类
+		arr.forEach(function(e,index,all){  })遍历数组 ,对数组中的每一项运行给定函数,参数分别为e->遍历的内容  index->对应的索引值 all->数组本身。此方法没有返回值
+		arr.filter(function(e,index){})数组 过滤 方法 返回值为满足后过滤出来的新数组  比如：let arr2 = arr.filter(e=>e.age>18) 
+		arr.map(function(item){})数组映射 对数组的每一项运进行处理(处理条件写在函数里)，返回每次函数调用的结果组成新数组
+		    *注->map不会对空数组进行检测 
+				map不会改变原始数组 
+		arr.sort() 排序，按照升序排列数组中的值，最小值在最前面，最大值在最后面（会改变原数组）
+		arr.reverse() 反转数组，可以反转数组项的顺序
+		arr.reduce(function(x,y){}) 求和/求积/求最大值... 
+		   *例： 求和：arr.reduce(function(x,y){return x+y;})
+		                     求积：arr.reduce(function(x,y){return x*y;})
+		                     求最大值：arr.reduce(function(x,y){return x>y;})
+        arr.reduceRight()工作原理同reduce,只是顺序是从数组的右边-->到左边
+		arr.fill('替换的值',开始的索引值（可选填）,到数组第几位索引（不包括结束位置）（可选填）) 可选参数不填写默认替换填充全部数组, 
+			*注：可选参数只写一位说明 从当前开始后面的值全部填充。
+			    可选参数两位都写就按照开始--到数组的第几位结束(不包括结束的值)的位置填充
+			*例：var arr = ["Banana", "Orange", "Apple", "Mango","Make"];
+				arr.fill("Runoob", 1, 3);//输出结果是["Banana", "Runoob", "Runoob", "Mango","Make"]
+		arr.some(function(e,index,arr){})//判断当前数组内的值如果有一个是true的话，且整个数组都为true
+			*例：var arr = [1,2,3,4,5,6]  arr.some(function(e,index,arr){return e%2===0;})//true
+		arr.every(function(e){})遍历这个数组 判断数组中某个值所有的都为true的时候才会返回true  否则有一个为false都返回是false
+		  	*例：var arr = [11,12,13,14]; arr.every(function(e){e > 10; })//true
+	数学方法
+		Math.min(num1,num2,num3...)用于确定一组数值中的最小值
+		Math.max(num1,num2,num3...)用于确定一组数值中的最大值
+		Math.ceil()执行向上舍入，即它总是将数值向上舍入为最接近的整数；
+			*例：alert(Math.ceil(25.9));//26     alert(Math.ceil(25.1)); //26
+		Math.floor()执行向下舍入，即它总是将数值向下舍入为最接近的整数；
+			*例：alert(Math.floor(25.9));//25     alert(Math.floor(25.1)); //25
+		Math.round()执行标准舍入，即它总是将数值四舍五入为最接近的整数；
+			*例：alert(Math.round(25.9));//26     alert(Math.round(25.1)); //25
+		Math.random()返回介于0到1之间一个无限不循环小数 如果想大于这个范围的话，不包括0和1,可以套用一下公式：
+				*公式：值 = Math.floor(Math.random() * 总数 + 第一个值)
+		Math.abs(num) 取出参数的绝对值（绝对值即非负数）把负数转换成正数
+	定时器
+		setTimeout(callback,time) 在指定时间内，执行一次函数 返回值为一个数字(编号) 会改变js的线程(time->毫秒)
+		clearTimeout 清除定时器
+		setInterval(callback,time) 一直执行 返回值为number类型（编号）
+		clearInterval(定时器的编号) 清除定时器 
+		  *注：在定时器中的this指向window
+	时间版运动的原来
+	     目标点*（已过时间/总共的时间） = 已经走了多少路程
+	  已过时间 = 现在时间-刚才时间
+	  
+	时间对象
+	   	Date时间对象用于处理日期和时间
+	   	let d = new Date() 用new Date关键字定义时间对象
+	   	*注：Date对象自动使用当前的日期和时间作为其初始值
+	   	获取时间戳的三种方法（时间戳：返回从 1970 年 1 月 1 日至今的毫秒数）
+	   	1.   new Date().getTime()
+	   	2.   +new Date
+	   	3.   Date.now()
+	   	获取日期
+	   	let d = new Date();
+	   	d.getFullYear()获取 年
+	   	d.getMonth()获取 月份 *注：获取当月的月份需要 +1
+	   	d.getDate()获取 日 
+	   	d.getHours()获取 时
+	   	d.getMinutes()获取 分钟
+	   	d.getSecounds()获取 秒
+	   	d.getDay()获取 周
+		
+		
+		
+		
+		
+		> ajax:
+		Asynchronous JavaScript And XML 异步 JS 和 XML
+		启动服务器步骤：
+		Shift+鼠标右键  打开 命令窗口
+		1.  npm i  安装node_modules
+		2. 	npm start  启动服务
+		
+		老版本from 请求接口步骤
+		get  接口
+		method 请求的方式
+		name：user || pass
+		ajax原理：
+		new XMLHttpRequest //创建XMLHttpRequest对象语句，XMLHttpRequest对象是于后端与服务器交换数据
+		ajax.open('get',get?url,true) //设置
+		ajax.send()
+		ajax.onload= function(){
+			console.log(ajax.responseText)
+		}
+		
 		
 		
 		
