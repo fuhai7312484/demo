@@ -141,6 +141,7 @@
 				map不会改变原始数组 
 		arr.sort() 排序，按照升序排列数组中的值，最小值在最前面，最大值在最后面（会改变原数组）
 		arr.reverse() 反转数组，可以反转数组项的顺序
+		const set = new Set(arr);//数组去重
 		arr.reduce(function(x,y){}) 求和/求积/求最大值... 
 		   *例： 求和：arr.reduce(function(x,y){return x+y;})
 		                     求积：arr.reduce(function(x,y){return x*y;})
@@ -196,7 +197,12 @@
 	   	d.getDay()获取 周
 		
 		
+	git流程和命令大全
+		git版本控制工具（不用网络就可以进行版本控制）
+		github是代码托管、参与协作、交友的网站
+	git
 		
+	
 		
 		
 		> ajax:
@@ -210,18 +216,73 @@
 		get  接口
 		method 请求的方式
 		name：user || pass
-		ajax原理：
+	ajax原理：
+	
+	ajax中get请求和post请求的区别
+		get请求相对来说不安全
+		get请求是会将参数跟在URL后进行传递，
+		get请求体积小，提交的数据最多只能是1024字节
+		get请求url如果遇到中文，在IE下是不兼容的，中文url需要利用encodeURI()转码
+		* 注 例如：ajax.open('get','/get?user='+encodeURI(input.value));
+		post请求相对来说安全
+		post体积大
+		post需要设置请求头，ajax.setRequestHeader('Content-type','application/x-www-form-urlencoded')
+	
+	//get请求方式写法
 		new XMLHttpRequest //创建XMLHttpRequest对象语句，XMLHttpRequest对象是于后端与服务器交换数据
-		ajax.open('get',get?url,true) //设置
-		ajax.send()
+		ajax.open('get',get?url+'sj=',true) //设置请求方式和链接服务器
+		*注 加sj字符主要是为了考虑服务器缓存
+		ajax.send()//发送请求
+		//输出结果方法可用两种方式一种是onload事件
+		
 		ajax.onload= function(){
-			console.log(ajax.responseText)
+			console.log(ajax.responseText)//接收返回值
 		}
+		另外一种是onreadystatechange事件
+		其中有个readyState属性 参数
+	readyState：请求状态，返回的是整数（0-4）。
+		0（未初始化）：还没有调用 open() 方法。（拿不到）
+		1（载入）：已调用 send() 方法，正在发送请求。（如果想拿到1的结果需要1和4调换）
+		2（载入完成）：send() 方法完成，已收到全部响应内容。
+		3（解析）：正在解析响应内容。
+		4（完成）：响应内容解析完成，可以在客户端调用。
+		ajax.onreadystatechange = function(){//请求完成后触发onreadystatechange
+			//当readyState为4的时候边上请求完成并响应内容解析完成可以调用
+			if(ajax.readyState ==4){
+				console.log(ajax.responseText)
+			}
+			
+		}
+	http状态码 用ajax.status状态码获取
+                1,2,3,4,5,6开头的编码
+                1开头，消息类
+                200   200-207成功
+                304,302 重定向  302也算成功
+                404  请求错误
+                5-6  服务器错误
+		
+		//post请求写法
+		const ajax = new XMLHttpRequest()
+		ajax.open('post',url)
+		//设置请求头
+		ajax.setRequestHeader('Content-tyep','application/x-www-form-urlencoded')
+		ajax.send('url'+value)//通过服务器发生的方式给服务传输数据
 		
 		
 		
 		
 		
+		__proto__原型链
+		
+		实例化对象的原型链 === 构造函数的原型
+		
+		函数有原型而且有原型链
+		对象只有原型链，没有原型
+		
+		
+		
+		
+		构造函数的原型下的属性或者方法，只给他的实例化对象用
 		
 		
 		

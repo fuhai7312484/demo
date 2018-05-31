@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body,
+			h1 {
+				margin: 0;
+			}
+			
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			
+			input {
+				outline: none;
+			}
+			
+			table {
+				border-collapse: collapse;
+				border: #bbb;
+			}
+			
+			body {
+				width: 100%;
+				height: 100%;
+				/*background: url(img/2.jpg) no-repeat;*/
+			}
+			
+			.tBody {
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				margin-top: 30px;
+				padding: 20px 30px 40px;
+				background-color: rgba(255, 255, 255, .6);
+			}
+			
+			.title {
+				text-align: center;
+				color: #fca113;
+				text-shadow: 0 0 2px #fcf913;
+				line-height: 50px;
+			}
+			
+			table {
+				background-color: #fff;
+			}
+			
+			th {
+				background-color: #ddd;
+			}
+			
+			tr {
+				height: 30px;
+			}
+			
+			ul {
+				padding: 5px 0;
+				width: 600px;
+				text-align: center;
+			}
+			
+			td {
+				text-align: center;
+			}
+			
+			td input {
+				margin: 0 2px;
+			}
+			
+			li {
+				padding: 5px 0;
+				overflow: hidden;
+			}
+			
+			label {
+				display: inline-block;
+			}
+			
+			input[type="text"] {
+				border: 1px solid #ccc;
+				width: 80px;
+				height: 20px;
+			}
+			/*.active {
+	background-color: #f7cb75;
+}*/
+			/*#tab tbody tr:hover {
+	background-color: #f7cb75;
+}*/
+		</style>
+	</head>
+
+	<body>
+		<section class="tBody">
+			<h1 class="title"></h1>
+			<ul id="header">
+				<li class="addPre"> <label>名字： <input type="text" id="name" /></label> <label>年龄： <input type="text" id="age" /></label> <input type="button" value="添加" id="add" /> </li>
+				<li> <span>排序</span>
+					<select id="s1">
+						<option value="price">年龄</option>
+						<option value="id">编号</option>
+					</select>
+					<select id="s2">
+						<option value="2">从高到底</option>
+						<option value="1">从低到高</option>
+					</select> <input type="button" value="提交" id="stBtn" /> <input type="button" value="批量删除" id="rm" /> </li>
+			</ul>
+			<table id="tab" width="600" align="center" border="1">
+				<thead>
+					<th>全选<input type="checkbox" id="checkAll"></th>
+					<th index="id">编号</th>
+					<th>商品</th>
+					<th index="price">年龄</th>
+					<th>操作</th>
+				</thead>
+				<tbody>
+					<!-- <tr>
+				<td><input type="checkbox"></td>
+				<td>1</td>
+				<td>露露</td>
+				<td>12</td>
+				<td>
+					<input type="button" value="删除"/>
+					<input type="button" value="上移">
+					<input type="button" value="下移">
+				</td>
+			</tr> -->
+				</tbody>
+			</table>
+		</section>
+	</body>
+	<script>
+		/*
+																	1.渲染数据
+																	2.添加内容
+																	3.排序
+																	4.选中
+																	5.上移下移
+																	6.删除
+																	7.批量删除
+			*/
+		var data = [{
+			'id': 1,
+			'name': 'momo',
+			'price': 36,
+			'checked': false
+		}, {
+			'id': 2,
+			'name': '小恋',
+			'price': 40,
+			'checked': false
+		}, {
+			'id': 3,
+			'name': 'yaya',
+			'price': 20,
+			'checked': false
+		}, {
+			'id': 4,
+			'name': 'feifei',
+			'price': 10,
+			'checked': false
+		}, {
+			'id': 5,
+			'name': 'hhehe',
+			'price': 35,
+			'checked': true
+		}];
+		//渲染数据
+		const tbody = document.querySelector('tbody')
+		const add = document.getElementById('add');
+		const checkAll = document.getElementById('checkAll');
+		const rm = document.getElementById('rm')
+		const s1 = document.getElementById('s1')
+		const stBtn = document.getElementById('stBtn')
+		const s2 = document.getElementById('s2');
+		let num = data.length
+		render(data)
+
+		function render(data) {
+			let html = ''
+			data.forEach(e => {
+				html += `<tr data-id="${e.id}">
+				<td><input type="checkbox" id="${e.id}" class="checkBtn"  ${e.checked?'checked':''}></td>
+				<td>${e.id}</td>
+				<td>${e.name}</td>
+				<td>${e.price}</td>
+				<td>
+					<input type="button" value="删除" class="del"/>
+					<input type="button" value="上移" class="upmove">
+					<input type="button" value="下移" class="downmove">
+				</td>
+			</tr>
+				`
+			});
+			tbody.innerHTML = html;
+			const aDel = tbody.querySelectorAll('.del')
+			const aInput = tbody.querySelectorAll('.checkBtn')
+			const downBtn = tbody.querySelectorAll('.downmove')
+			const upBtn = tbody.querySelectorAll('.upmove')
+			//删除数据
+			for(let i = 0; i < aDel.length; i++) {
+				aDel[i].onclick = function() {
+					delData(i)
+				}
+				//选中
+				aInput[i].onchange = function() {
+					data.forEach(e => {
+						if(e.id == aInput[i].id) {
+							e.checked = aInput[i].checked;
+						}
+					})
+					checkAll.checked = data.every(e => e.checked);
+					render(data)
+				}
+				downBtn[i].onclick = function() {
+					let newD = data.splice(i, 1);
+					data.splice(i + 1, 0, ...newD)
+					render(data)
+				}
+				upBtn[i].onclick = function() {
+					if(i != 0) {
+						let newD = data.splice(i, 1);
+						data.splice(i - 1, 0, ...newD)
+					}
+					render(data)
+				}
+			}
+		}
+		//批量删除
+		rm.onclick = function() {
+			data = data.filter(e => !e.checked)
+			render(data);
+		}
+		//全选
+		checkAll.onchange = function() {
+			data.forEach(e => {
+				e.checked = checkAll.checked;
+				render(data)
+			})
+		}
+		//删除数据函数
+		function delData(id) {
+			data.splice(id, 1)
+			render(data)
+		}
+		//添加数据
+		add.onclick = function() {
+			addData()
+		}
+		//添加数据
+		function addData() {
+			const name = document.getElementById('name');
+			const age = document.getElementById('age');
+			let nameVal = name.value;
+			let ageVal = age.value
+			console.log(ageVal * 1)
+			if(nameVal == '' || ageVal == '') {
+				alert('名字或者年龄不能为空');
+				return
+			} else if(isNaN(ageVal * 1)) {
+				age.focus()
+				alert('请输入数字')
+				return
+			} else if(ageVal * 1 < 18 || ageVal * 1 > 80) {
+				age.focus()
+				alert('请输入18岁到80岁之间的年龄')
+				return
+			} else {
+				num++
+				data.push({
+					'id': num,
+					'name': nameVal,
+					'price': parseInt(ageVal),
+					'checked': false
+				})
+				render(data)
+				age.value = ''
+				name.value = ''
+			}
+		}
+		//排序
+		stBtn.onclick = function() {
+			let s2val1 = s2.value
+			let s1val1 = s1.value
+			if(s1val1 === 'price') {
+				if(s2val1 === '1') {
+					data.sort(function(a, b) {
+						return a.price - b.price
+					})
+				} else if(s2val1 === '2') {
+					data.sort(function(a, b) {
+						return b.price - a.price
+					})
+				}
+			} else if(s1val1 === 'id') {
+				if(s2val1 === '1') {
+					data.sort(function(a, b) {
+						return a.id - b.id
+					})
+				} else if(s2val1 === '2') {
+					data.sort(function(a, b) {
+						return b.id - a.id
+					})
+				}
+			}
+			render(data)
+		}
+	</script>
+
+</html>
