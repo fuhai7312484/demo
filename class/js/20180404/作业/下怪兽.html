@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+    .box{
+        height: 600px;
+        width: 800px;
+        border: 1px solid red;
+        position: relative;
+        overflow: hidden;
+      
+    }
+    .box div{
+        position:absolute;
+    }
+</style>
+	</head>
+	<body>
+		
+	
+    <div class="box" id="box">
+    	
+    	
+    	
+    </div>
+    <input type="button" value="开始游戏" id="btn" />
+		
+		
+		<script>
+    var box=document.getElementById("box");
+    var btn=document.getElementById("btn");
+    //生成怪兽
+    function createSnow(l,t,s){
+        var newNode=document.createElement("div");
+   
+         newNode.style.height=s+"px";
+         newNode.style.width=s+"px";
+         newNode.style.left=l+"px";
+         newNode.style.top=t+"px";
+         newNode.style.background="url('img/snow.png')";
+         newNode.style.backgroundSize="100% 100%";
+         box.appendChild(newNode);
+         startMove(newNode);
+         
+    }
+    var time1=null;
+    var poY=0;
+    btn.onclick=function(){
+    	clearInterval(time1);
+        time1 = setInterval(function(){
+            var le=parseInt(Math.random()*770);//随机生成位置及宽高
+            var to=parseInt(0);
+            var size=parseInt(30);
+            createSnow(le,to,size);
+        },3000);
+        
+    }
+    //怪兽下落
+    function startMove(obj){
+        var poY=obj.offsetTop;//获取对象到顶部边宽的距离
+        var time2=null;
+        function move(){
+            poY++;
+            obj.style.top=poY+"px";
+            if(poY>600){//当怪兽超出容器时的处理事件
+                clearInterval(time2);//清除计时器
+                box.removeChild(obj);//删除超出容器的节点对象
+            }
+        }
+        time2=setInterval(move,10);
+    }
+</script>
+	</body>
+</html>

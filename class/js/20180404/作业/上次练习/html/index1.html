@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/index1.css"/>
+</head>
+<body>
+
+    <div class="box">
+        <header class="head">
+            <span>从小到大</span>
+            <span>打乱顺序</span>
+        </header>
+        <ul class="main">
+            <li class="item one">One
+                <span>1-粉红</span>
+            </li>
+            <li class="item two">Tow
+                <span>2-粉黄</span>
+            </li>
+            <li class="item three">Three
+                <span>3-黄绿</span>
+            </li>
+            <li class="item four">Four
+                <span>4-嫩绿</span>
+            </li>
+            <li class="item five">Five
+                <span>5-湖蓝</span>
+            </li>
+            <li class="item six">Six
+                <span>6-蓝紫</span>
+            </li>
+            <li class="item seven">Seven
+                <span>7-粉紫</span>
+            </li>
+            <li class="item eight">Eight
+                <span>8-紫红</span>
+            </li>
+        </ul>
+    </div>
+
+
+    <script>
+
+
+        var lis = document.querySelectorAll('li');
+        var ul = document.querySelector('ul');
+
+        var spans = document.querySelectorAll('.head span');
+
+        ul.style.width = 200*4+'px';
+        ul.style.height = 200*2+'px';
+
+        for(var i=0;i<lis.length;i++){
+
+            lis[i].style.left = (i%4)*200+'px';
+            lis[i].style.top = (parseInt(i/4))*200+'px';
+
+        }
+
+        spans[1].onclick = function(){
+
+//            alert(1);
+
+            //把元素集合放到数组里
+            var arr = [];
+
+            for(var i=0;i<lis.length;i++){
+                arr.push(lis[i]);
+            }
+
+            arr.sort(function(a,b){
+                //a,b 代表的是数组中的元素
+//                var n1 = a.querySelector('span').innerHTML;
+//                var n2 = b.querySelector('span').innerHTML;
+//                return parseFloat(n1)-parseFloat(n2);
+                return 0.5-Math.random();
+            });
+
+            console.log(arr);
+
+
+
+            //arr通过以上排序方式排序完 还需要把内容放到页面上
+            ul.innerHTML = '';
+            for(var i=0;i<arr.length;i++){
+                ul.innerHTML += '<li class="'+arr[i].className+'">'+arr[i].innerHTML+'</li>';
+//                ul.innerHTML += arr[i];
+            }
+
+//            console.log(ul.innerHTML);
+            lis = document.querySelectorAll('li');
+
+            for(var i=0;i<lis.length;i++){
+
+                lis[i].style.left = (i%4)*200+'px';
+                lis[i].style.top = (parseInt(i/4))*200+'px';
+
+            }
+
+
+
+
+        };
+
+
+        spans[0].onclick = function(){
+
+//            alert(1);
+
+            //把元素集合放到数组里
+            var arr = [];
+
+            for(var i=0;i<lis.length;i++){
+                arr.push(lis[i]);
+            }
+
+            arr.sort(function(a,b){
+//                a,b 代表的是数组中的元素
+                var n1 = a.querySelector('span').innerHTML;
+                var n2 = b.querySelector('span').innerHTML;
+                return parseFloat(n1)-parseFloat(n2);
+//                return 0.5-Math.random();
+            });
+
+            console.log(arr);
+
+
+
+            //arr通过以上排序方式排序完 还需要把内容放到页面上
+            ul.innerHTML = '';
+            for(var i=0;i<arr.length;i++){
+                ul.innerHTML += '<li class="'+arr[i].className+'">'+arr[i].innerHTML+'</li>';
+//                ul.innerHTML += arr[i];
+            }
+
+//            console.log(ul.innerHTML);
+            lis = document.querySelectorAll('li');
+
+            for(var i=0;i<lis.length;i++){
+
+                lis[i].style.left = (i%4)*200+'px';
+                lis[i].style.top = (parseInt(i/4))*200+'px';
+
+            }
+
+
+
+
+        };
+
+
+
+
+
+
+    </script>
+
+
+</body>
+</html>

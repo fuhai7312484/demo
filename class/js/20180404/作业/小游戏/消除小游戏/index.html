@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style/Game_main.css">
+   
+</head>
+<body>
+<div id="wrap">
+	<div class="head">
+		<div id="log"></div>
+		<h3 class="title">你的鼠标有多快?</h3>
+		<p class="explain">游戏说明：“点击游戏”，随机掉下表情点中它，千万别让它掉下去！！</p>
+	</div>
+	<div class="content">
+		<div class="win">
+			<span class="winNum">0分</span>
+			<p>得分</p>
+		</div>
+		<div class="lose">
+			<span class="loseNum">0分</span>
+			<p>失分</p>
+		</div>
+		<a href="javascript:;" class="btn">开始游戏</a>
+	</div>
+</div>
+
+<script src="js/tween.js"></script>
+<!--<script src="js/Game_main.js"></script>-->
+<script>
+	const btn = document.querySelector('.btn');
+	const win = document.querySelector('.win');
+	const lose = document.querySelector('.lose')
+	 const winNum = document.querySelector('.winNum');
+	
+	  
+	 let num1 = 0;
+	 let num2 = 0;
+	let speed = 10000;
+	let data = [
+	'img/demonI.png',
+	'img/demonII.png',
+	'img/demonIII.png',
+	'img/demonIV.png',
+	'img/demonV.png'
+];
+
+	
+	btn.onclick = function(){	
+	btn.style.bottom = '-60px';
+	btn.style.opacity = '0';
+	lose.style.left = win.style.left = '-98px';
+	
+	generate()
+	
+	
+//		payGame();
+	}
+	
+	function payGame(){
+		
+		
+		
+		
+	}
+	//随机生成随机位置的小人
+	
+	function generate(){
+		let content = document.querySelector('.content');
+		let ImgR = Math.floor(Math.random()*5);
+		let ImgLfet = Math.floor(Math.random()*(648-20));
+		
+		content.innerHTML += `<img id="rImg" style="position:absolute;left:${ImgLfet}px;top:0px" 
+		src="${data[ImgR]}"/>`;
+		let rImg = document.getElementById('rImg');
+		
+		
+	move({
+		el:rImg,
+		attr:{
+			top:350
+		},
+		d:speed,
+	
+	})
+		rImg.onclick = function(){
+			++num1
+					dou(rImg,'left',10,function(){
+				 const loseNum = document.getElementsByClassName('loseNum');
+				winNum.innerHTML = ++num1 + '分'; 
+				console.log(loseNum)
+				rImg.remove();
+					generate();
+				
+			});
+		}
+		
+//		
+//			move({
+//		el:rImg,
+//		attr:{
+//			top:350
+//		},
+//		d:speed,
+//		callback(){
+//			/*
+//				落到目标点
+//		]]*/
+//			dou(content,'top',10,function(){
+//				 const loseNum = document.getElementsByClassName('loseNum');
+//				loseNum.innerHTML = ++num2 + '分'; 
+//				console.log(loseNum)
+//				rImg.remove();
+//				/*
+//					三次生命用完
+//				*/
+//				if(num2 >= 3){
+//					init();
+//				}else{
+//					//删除之后重新启动游戏
+//					generate();
+//				}
+//			});
+//		}
+//	});
+//		
+		
+		
+		
+		
+		
+	}
+
+	
+	
+	
+</script>
+
+
+
+</body>
+</html>
+
+<!-- 
+需求:
+1,点击开始btn,游戏开始
+2,表情随机往下落  Math.ceil()向上取整,Math.random()随机数,setInterval(),clearInterval(),
+3,点击表情左右抖动消失得分+1/没点中下落后窗口上下抖动失分+1,失分积满10分则游戏失败!!!
+ -->
+

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Document</title>
+		<style>
+			body {
+				background: #7168c9;
+				margin: 0;
+			}
+			
+			.container {
+				width: 854px;
+				height: 400px;
+				margin: 30px auto;
+			}
+			
+			.leftText {
+				float: left;
+				width: 318px;
+				height: 369px;
+				background: #ebf8f9;
+				border: 2px solid #3863d7;
+				border-radius: 5px;
+				padding: 10px;
+			}
+			
+			.btnBox {
+				width: 160px;
+				height: 400px;
+				float: left;
+			}
+			
+			.btn {
+				width: 100px;
+				height: 80px;
+				background: #6de0fd;
+				color: #fff;
+				font: 12px/80px "微软雅黑";
+				display: block;
+				border-radius: 5px;
+				text-align: center;
+				margin: 137px auto 10px auto;
+				cursor: pointer;
+			}
+			
+			.strInfo {
+				text-align: center;
+				color: #fff;
+			}
+			
+			.rigthText {
+				float: left;
+				width: 318px;
+				height: 369px;
+				background: #ebf8f9;
+				border: 2px solid #3863d7;
+				border-radius: 5px;
+				padding: 10px;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container"> <textarea class="leftText"></textarea>
+			<div class="btnBox"> <span class="btn">
+  			把文字右移
+  		</span>
+				<div class="strInfo"> 0/0 </div>
+			</div>
+			<div class="rigthText"></div>
+		</div>
+		<script>
+			const btn = document.querySelector('.btn');
+			const leftText = document.querySelector('.leftText');
+			const rigthText = document.querySelector('.rigthText');
+			const strInfo = document.querySelector('.strInfo')
+			let timer = null
+			btn.onclick = function() {
+				rigthText.innerHTML = '';
+				timer = setInterval(function() {
+					let leftval = leftText.value;
+					let rigthval = rigthText.innerHTML;
+					if(leftval.length === 0) {
+						clearInterval(timer);
+					}
+					leftText.value = leftval.substr(1);
+					rigthText.innerHTML += leftval.substr(0, 1)
+					strInfo.innerHTML = leftval.length + '/' + (leftval.length + rigthval.length);
+				}, 1)
+  			}
+		</script>
+	</body>
+
+</html>

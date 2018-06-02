@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/index.css"/>
+    <script src="../../../tween.js"></script>
+    <script src="../../../commom.js"></script>
+</head>
+<body>
+
+    <div class="box">
+        <header class="head">
+            <h3>你的鼠标有多快？</h3>
+            <p>游戏说明："点击游戏"，随机掉下表情点中它，千万别让他掉下去！</p>
+        </header>
+        <section class="main">
+            <div class="score">
+                <div>
+                    <span class="grade">0分</span>
+                    <span>得分</span>
+                </div>
+                <div>
+                    <span class="grade">0分</span>
+                    <span>失分</span>
+                </div>
+            </div>
+            <div class="game">
+                <div class="game-box">
+                </div>
+                <div class="begin">
+                    开始游戏
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+
+
+        /*
+        * 开始游戏的点击效果
+        *
+        *
+        * 等到开始的效果结束 然后开始游戏人物的出现
+        *
+        * 游戏人物创建的时候后要给点击事件
+        *       点中要抖动 并且消失
+        *
+        * 如果游戏人物被点中就要消失 并且加分
+        *
+        * 如果游戏人物没有被点中，跑出地图外 就要减分 整个游戏界面要抖动
+        *
+        *
+        *
+        * */
+
+        //开始游戏的点击效果
+        var btn =  document.querySelector('.begin');
+
+        btn.onclick = function(){
+
+            //要动的元素
+            var score = document.querySelector('.score');//积分
+            var _this = this;//按钮
+
+            MTween({
+                obj:_this,
+                attrs:{
+                    bottom:'-30px',
+                    opacity:0
+                },
+                duration:300
+            });
+
+            MTween({
+                obj:score,
+                attrs:{
+                    left:'0px'
+                },
+                duration:300,
+                callBack:function(){
+
+                    //开始人物出现
+                    createMan();
+                }
+            });
+
+        };
+
+
+        function createMan(){
+
+            var speed = 3000; //人物掉落的速度
+
+
+            //创建人物
+            var box = document.querySelector('.game-box');
+            var span = '<span style="background:url(../img/ico1.png);background-size:100%;left:'+Math.round(Math.random()*550+150)+'px;display: block;opacity:1;"></span>';
+            box.innerHTML = span;
+
+            //把人物元素获取过来
+            span = box.querySelector('span');
+
+
+            MTween({
+                obj:span,
+                attrs:{
+                    top:'500px'
+                },
+                duration:speed,
+                callBack:function(){
+
+
+                    var box = document.querySelector('.game');
+
+                    //失分：
+                    var grade = document.querySelectorAll('.grade');
+
+                    grade[1].innerHTML = parseInt(grade[1].innerHTML)-1+'分';
+
+
+                    shake(box,'marginTop',50,5,function(){
+                        //抖完 继续生成下一个人物
+
+                        var grade = document.querySelectorAll('.grade');
+
+                        if(grade[1].innerHTML!='-500分'){
+                            createMan();
+                        }else{
+                            alert('继续努力喔~~');
+                        }
+
+                    });
+                }
+            });//执行掉落的过程，并且保存一下动画的id
+
+
+            span.onclick = function(){
+                //加分：
+                var grade = document.querySelectorAll('.grade');
+
+                grade[0].innerHTML = parseInt(grade[0].innerHTML)+3+'分';
+
+                var _this = this;
+
+                _this.clearInterval();
+//                _this.style.opacity = .5;
+                MTween({
+                    obj:span,
+                    attrs:{
+                        opacity:0
+                    },
+                    duration:400
+
+                });
+
+                shake(_this,'left',50,5,function(){
+                    _this.style.display = 'none';
+                    createMan();
+                });
+
+
+
+            };
+
+
+
+
+        }
+
+
+
+
+    </script>
+</body>
+</html>

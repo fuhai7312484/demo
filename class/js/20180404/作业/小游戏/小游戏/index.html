@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/index.css"/>
+   
+</head>
+<body>
+
+    <div class="box">
+        <header class="head">
+            <h3>你的鼠标有多快？</h3>
+            <p>游戏说明："点击游戏"，随机掉下表情点中它，千万别让他掉下去！</p>
+        </header>
+        <section class="main">
+            <div class="score">
+                <div>
+                    <span class="grade df">0分</span>
+                    <span>得分</span>
+                </div>
+                <div>
+                    <span class="grade sf">0分</span>
+                    <span>失分</span>
+                </div>
+            </div>
+            <div class="game">
+                <div class="game-box">
+                	
+                </div>
+                <div class="begin">
+                    开始游戏
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+
+
+        /*
+        * 开始游戏的点击效果
+        *
+        *
+        * 等到开始的效果结束 然后开始游戏人物的出现
+        *
+        * 游戏人物创建的时候后要给点击事件
+        *       点中要抖动 并且消失
+        *
+        * 如果游戏人物被点中就要消失 并且加分
+        *
+        * 如果游戏人物没有被点中，跑出地图外 就要减分 整个游戏界面要抖动
+        *
+        * */
+       const begin = document.querySelector('.begin')
+       const score = document.querySelector('.score')
+       const gameBox = document.querySelector('.game-box')
+       const main = document.querySelector('.main')
+       begin.onclick = ()=>{
+       	
+       	begin.style.bottom = '-36px';
+       	score.style.left = '12px'
+       	
+       	createSnow()
+       	
+       }
+   //创建小怪兽
+function createSnow(){
+	gameBox.innerHTML = `<span class="monster"></span>`
+	const monster = document.querySelector('.monster');
+	let leftSize = Math.round(Math.random()*704)
+	let df = document.querySelector('.df');
+	let sf = document.querySelector('.sf')
+	
+	let Score = 0;
+	let Lose = 0
+	let toY = 0 
+	let timer2;
+	function move(){
+		toY++;	
+	if(toY>462){
+		toY=0
+		clearInterval(timer2);
+		Lose++;
+		sf.innerHTML = Lose+'分';
+		let mianTopArr = []
+		let to = 0
+		let timer3;
+		for(let j=10;j>=2;j-=2){
+			
+			mianTopArr.push(j,-j)
+			
+		}
+		mianTopArr.push(0);
+		
+	
+		timer3 = setInterval(function(){
+			to++
+		
+			main.style.top = mianTopArr[to]+'px';
+			
+			if(to > mianTopArr.length){
+                clearTimeout(timer3);
+               to = 0;
+           }	
+		},10)
+	
+	}
+		monster.style.top = toY+'px';	
+	}
+	timer2 = setInterval(move,10)
+	monster.style.left = leftSize+'px';
+	//点击抖动
+	monster.onclick = ()=>{
+		Score++;
+		df.innerHTML= Score+'分'
+		let arr = [];
+		for(let i=10;i>=2 ;i-=2){
+		 arr.push(i,-i);	
+		}
+		 arr.push(0); 
+		let douLeft = parseFloat(getComputedStyle(monster).left);
+		let timer;
+		let num = 0;
+		monster.src = 'img/demonVI.png'
+		clearInterval(timer);
+		timer = setInterval(function(){
+			num++;
+			monster.style.left = douLeft + arr[num]+'px';
+			   if(num > arr.length){
+                clearTimeout(timer);
+                num = 0;
+           }	
+		},30)
+		
+		
+		
+		
+	}
+	
+
+	
+}
+
+
+
+
+    </script>
+</body>
+</html>
