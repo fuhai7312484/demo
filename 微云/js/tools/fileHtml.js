@@ -15,7 +15,7 @@ const treeMenuBox = tools.$('.tree-menu')[0];
 const onTree = tools.$('.tree-menu')[0];
 const fullTipBox = tools.$('.full-tip-box')[0];
 const treeMenuBoxChilds = treeMenuBox.getElementsByTagName('span')
-console.log(treeMenuBoxChilds)
+
 
 render(0)
 
@@ -44,7 +44,9 @@ function render(id) {
 			div.dataset.id = e.id
 
 			let img = document.createElement('img')
-			img.src = 'img/folder-b.png';
+		
+			img.src = imgSrc(e.type);
+			
 			//给图片添加双击事件
 			img.ondblclick = function() {
 				arr.forEach(e=>e.checked=false)
@@ -53,7 +55,7 @@ function render(id) {
 					
 					childArr.forEach(e=>e.checked = false)
 				}
-				
+				addClass(e.id)
 				//渲染面包屑导航
 				breadMenu(e.id)
 				//重新渲染数据
@@ -82,6 +84,27 @@ function render(id) {
 			folders.appendChild(div);
 
 		})	
+		
+		function imgSrc(type){
+			switch(type){
+				case 'music': return 'img/folder-m.png' ;
+				break;
+				case 'file': return 'img/folder-b.png' ;
+				break;
+				case 'Code': return 'img/folder-js.png' ;
+				break;
+				case 'Word': return 'img/folder-W.png' ;
+				break;
+				case 'Video': return 'img/folder-V.png' ;
+				break;
+				case 'Photo': return 'img/folder-P.png' ;
+				break;
+				
+				
+			}
+			
+		}
+		
 		
 		checkedAll.onclick = function(){
 						  /*
@@ -131,6 +154,8 @@ function breadMenu(id) {
 		if(ev.target.tagName == 'A') {
 			render(ev.target.dataset.id);
 			breadMenu(ev.target.dataset.id);
+			treeMenuBox.innerHTML = treeMenu(-1,-1)
+			addClass(ev.target.dataset.id)
 
 		}
 
@@ -169,6 +194,19 @@ onTree.onclick = function(ev){
 		
 		
 	}
+}
+addClass(0)
+function addClass(id){
+//	console.log(id)
+	let treeSpan = document.querySelectorAll('.tree-menu span')
+	let treeSpanId = document.querySelectorAll('.tree-menu span[data-id="'+id+'"]')[0]
+	
+
+	for(let i=0;i<treeSpan.length;i++){
+		treeSpan[i].style.background = '';
+	}
+	treeSpanId.style.background = 'rgb(238, 238, 238)';
+
 }
 
 //function TipInfo(txt){
