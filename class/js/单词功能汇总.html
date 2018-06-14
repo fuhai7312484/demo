@@ -9,6 +9,16 @@
 		var 变量声明
 		const  常量声明
 		function 函数声明
+		 fn.apply()//函数方法  apply:方法能劫持另外一个对象的方法，继承另外一个对象的属性.
+		  例：function fn() {
+				return this.greeting + ', ' + this.name + '!!!';
+			}
+			let obj = {
+				greeting: 'Hello',
+				name: 'Rebecca'
+			}
+			console.log(fn.apply(obj))
+		
 		undefined 未定义   
 		console.log 打印         
 		alert()弹出提示 (会阻塞代码)
@@ -54,7 +64,7 @@
 		-Infinity 计算机的最小数值
 		转换数字的三种方法
 		Number() 字符串数字转换成数字
-		parseInt() 字符串转数字（转换到第一个非数字前面的所有数字，小数点为非数字）
+		parseInt() 字符串转数字（转换到第一个非数字前面的所有数字，小数点为非数字）*注 第二个参数是表示解析的数字的基数 默认为0 如果它以 “0x” 或 “0X” 开头，将以 16 为基数
 		parseFloat()字符串转数字（可转换小数点前后的所有数字）
 		要转的数据.toString() 其他数据类型转换成字符串
 		什么是真什么是假
@@ -70,7 +80,7 @@
 		截取类 
 		substr （起始位置,需要截取的长度）返回值为新的字符串
 		substring（起始位置,结束位置但不包含结束位置）返回值为新的字符串（如果开始位置>结束位置则两个参数调换位置）
-		slice （起始位置,结束位置但不包含结束位置）返回值为新的字符串
+		slice （起始位置,结束位置但不包含结束位置）返回值为新的字符串 例：console.log(str.slice(1, 3));//'bc'
 		查询类
 		indexOf(指定查询的字符,从哪个位置开始查询)（从前往后查询）返回值为字符的所在位置 如果没有返回-1
 		charAt(需要查询字符的索引)返回值查询的对应索引的字符
@@ -195,13 +205,313 @@
 	   	d.getMinutes()获取 分钟
 	   	d.getSecounds()获取 秒
 	   	d.getDay()获取 周
+	   设置日期
+	   let d = new Date
+	   d.setFullYear() 设置年
+	   d.setMonth()设置月 注*设置 Date 对象中月份设置的时候得-1
+	   d.setDate()设置日 注* 参数中传0 表示设置的是上个月的最后一天
+	   d.setHours()设置小时
+		d.setMinutes()设置分钟
+		d.setSecounds()设置秒
+		d.setDay()设置星期
+BOM (browser object model) 浏览器对象模型
+	window.open(URL,name,features,replace)//打开新窗口 
+		*注： URL：打开的链接地址，
+			name：打开的方式 默认新窗口打开（_blank）
+			features:新窗口的大小（兼容性极差）
+			replace：可选参数 ，布尔值，true - URL 替换浏览历史中的当前条目。false - URL 在浏览历史中创建新的条目。
+			注：在高版本浏览器下，如果不是用户主动触发，那么会拦截
+	window.close()关闭 window 浏览器窗口
+			*注：chrome 调用直接关
+				ff：默认不关（当通过open打开的才关闭）
+				IE：弹窗询问
+				
+	screen.height/screen.width 获取屏幕的高度和宽度 
+		  *注：加<meta>视口是手机端可视区域尺寸 不加<meta>是整个PC可视区域的尺寸（不计算滚动条）
+	screen.availHeight/availWidth 浏览器的屏幕的可用的高度和宽度  
+		  *注：加<meta>视口是手机端可视区域尺寸 不加<meta>是整个PC可视区域的尺寸（不计算滚动条）
+				
+	window.innerWidth / window.innerHeight window下的只读属性，获取浏览器（是pc端可视区）整个可视区的宽度或者高度。
+	*注：这里的宽度和高度不包括菜单栏、工具栏以及滚动条等的高度
+	document.documentElement.clientWidth 浏览器可视区域（是pc端可视区）宽度
+	document.documentElement.clientHeight 浏览器可视区域（是pc端可视区）高度
+		*注：计算滚动条的尺寸，滚动条会影响他的尺寸，
+			一般有滚动条得出的尺寸要比没滚动条的尺寸大17px，
+			菜单栏、工具栏。开发模式控制台同样也会影响他的尺寸
+		documentElement可以用body替换，但是要清楚默认样式
+
+	document.body.clientWidth
+	document.body.clientHeight
+		*注：如果html里的body设置了宽、高则取出的尺寸就是body的设置的尺寸
+		 	如果html的body里没有设置宽、高，
+		 	计算滚动条的尺寸,滚动条会影响他的尺寸
+			 取出的宽度就是可视区的宽度，高度为被html内容所撑开的高度。
+	window.pageXOffset/window.pageYOffset 只读属性 设置滚动条向下或者向右滚动
+		*注：高版本使用window.scrollTo(x,y) 可写属性
+			也可以使用document.documentElement.scrollTop 即可写也可读
+		*例：document.documentElement.onclick = function(){
+				//获取当前竖滚动条（Y）的位置
+				console.log(window.pageYOffset);
+				//获取当前竖滚动条（Y）的位置
+				console.log(document.documentElement.scrollTop);
+				//设置滚动条放回到顶部也就是0的位置
+			// document.documentElement.scrollTop = 0;
+			//设置滚动条放回到顶部也就是0的位置（第二种写法）
+			// window.scrollTo(0,0);
+		}
+	window.onscroll 滚动监听事件 可监听鼠标中间滚轮的动向
+		*例：let num=0;
+			 window.onscroll = function(){
+			//监听鼠标混轮滚动时，当前滚动条的位置
+					console.log(window.pageYOffset);
+					num++;
+					//统计当前鼠标滚轮滚动了几次
+					console.log(num)
+				}
+	window.onresize 当浏览器窗口缩放时触发的事件
+		*例： window.onresize = function(){
+				//当window窗口缩放时输出可视区的宽度	
+				console.log(window.innerWidth);
+				}
+location 主要是获取浏览器地址栏的信息
+	href :读写地址栏信息（会刷新页面）
+	hash：锚信息（不刷新页面）从#号开始的信息
+	
+	onhashchange()当hash值改变的时候就会触发
+	search(查询信息)?xxxxx(会刷新页面)从?到#之间的信息
+	正常格式为问号到#号前面，如果?号在#之后，那么全部会认为是锚信息
+	http://www.baidu.com?search=miaov#page=3
+	服务器环境下才能测试
+	localhost -> 域名  相当于baidu 
+	localhost:80端口  -> 默认端口号
+	host 设置或返回主机名和当前 URL 的端口号
+	hostname 设置或返回不带端口号的主机名
+	pathname 设置或返回 URL 中的目录 和 文件名
+	port 设置或返回当前 URL 的端口号
+	protocol 设置或返回当前 URL 的协议(http 或 https)
+	reload()  刷新 重新加载当前文档
+navigator关于计算机中的信息
+	appName 返回浏览器的名称  console.log(navigator.appName)//netscape
+	onLine 返回指明系统是否处于脱机模式 返回布尔值 true为联机状态 false为未联机
+	platform 返回运行浏览器的操作系统平台（不太精准）
+	userAgent 返回由浏览器代理的详细信息(可以用来判断当前访问的是什么系统)
+	 *注：信息容易被修改
+	 IE:
+	  11:
+          "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko"
+      10:  "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E)"
+	   9:   "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E)"
+	   8:   "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E)"
+		判断当前手机访问的是android还是iphone
+			function isPhone(){
+				let str = navigator.userAgent.toLowerCase();
+				if(str.includes('android') || str.includes('iphone') || str.includes('mac')){
+					return true;
+				}else{
+					return false;
+				}
+			}
+history详解：历史记录管理
+	在服务器环境下才能运行
+	history.length 查看历史记录的长度
+	history.back() 退一次；
+	history.forward()进一次
+	history.go(num) 可以进退 num为多少就进退多少
+		*注：正数为进，负数为退
+	history.pushState(数据对象,名字,路径) 向浏览器中添加状态
+	 	*例：history.pushState({num:1},'hehe','http://localhost:88/2018-4-17/6_history1.html');
+		*注：三参：数据对象：一个与指定网址相关的状态对象
+				 名字：新页面的标题
+				 路径：url 新的网站，必须与当前页面处在同一个域
+	history.replaceState(数据对象,名字,路径)替换在状态
+
+	
+获取和设置行间属性
+	ele.getAttribute('行间属性名')   -> 获取行间属性(如果没有这个属性显示undefined)
+		*例：box.getAttribute('style')//可以去到box的行间style的属性
+		*注：通过getAttribute()获取到的img的行间属性src是可以用做来做判断条件的路径
+	ele.setAttribute('行间属性名','行间属性值') -> 设置行间属性
+		*例：box.setAttribute('index','1')//给box设置一个值为2的index行间属性
+	ele.removeAttribute('行间属性名') -> 删除行间属性
+		*例：box.removeAttribute('style')//删除box的行间属性style
+	ele.getBoundingClientRect()//获取当前ele元素的一些属性的集合对象，里面的值参数包括 {top,left,right,bottom,width,height,x,y}
+		*注：如果需要取出其中的一个属性值用法：ele.getBoundingClientRect().top
+				//这里去到的top值需要清除默认样式才可以用
+	ele.offsetTop//获取当前ele到定位父级的top值 
+		*注:margin值会影响取出的值尺寸,padding、border值不会影响取出的值
+	ele.offsetLeft//获取当前ele的left值
+		*注:margin值会影响取出的值尺寸,padding、border值不会影响取出的值
+	ele.offsetWidth//获取当前ele的宽
+		*注：padding、border值会影响到取出的值，margin值不会影响到取出的值
+	ele.offsetHeight//获取当前ele的高
+		*注：padding、border值会影响到取出的值，margin值不会影响到取出的值
+	---------------------------------------------------------------------------	
+		*注：以上offset获取到的元素属性值，如果用都需要清除默认样式
+懒加载的原理：
+	 1.循环生成li和img 并且给每个img 添加一个假的_src的行间属性并把img真的src的图片路径给这个自定义属性待用
+	 2.先获取到当前可视区的高度 let iH = window.innerHeight
+	 3.当鼠标滚轮移动时，循环所有的LI判断
+	 4.判断 如果第i个LI（也就是进入到可视区的li）的top值小于或者等于可视区范围 就让自定义属性里的假src路径赋值给真src并改变透明度逐渐显示图片
+
+DOM详解（文档对象模型）Document Object Model
+		DOM树：一个页面由若干个标签组成的一个树状层级结构
+		节点：页面中所有的内容都叫节点。
+			<!-- <div> 123456
+				...    .
+				<!-- 这里是注释 -->
+				//
+			</div> -->
+		要清楚的知道DOM的层级关系
+	typeof ele 查看数据类型（方法 || 运算符）
+			number 类型的
+			string 字符串类型
+	ele.nodeType  查看页面节点的类型（属性）
+		*注：节点类型：文档节点   document   9   比如->document
+					 属性节点   attribute  2    比如->id、style、index 等
+					*注：其中ele.attributes可以获取到元素身上所有的属性集合
+					*例：box.attributes[0]
+					 文本节点    text      3    比如->文字、空格和回车
+					 注释节点	 comment   8    比如-><!--这里是注释节点 -->
+					 元素节点    element   1    比如->html标签 div、p、h1等
+		*例：console.log(document.nodeType)// document的节点类型
+	ele.nodeName 查看节点名称
+		*例：console.log(box.nodeName)//输出 DIV
+	ele.childenodes 获取当前元素下面的所有子节点
+	ele.nodeValue 查看节点值
+		*例：<div>  
+			<!-- {name:注释} -->
+		</div>
+		console.log(box.childNodes[2].nodeValue)// 输出结果 {name:注释}
+	ele.tagName  获取标签元素的名字(获取到的全是大写)
+		*例：<p></p>
+			console.log(box.childnodes[0].tagName)  //输出的结果都 P
+	
+	 
+on事件
+		事件，是文档或者浏览器窗口发生一些特定交互的交互瞬间。 
+		js可以侦听这些交互，在交互发生时执行相应的一些代码
+		
+		onclick 			 鼠标双击
+		onmouseover			 鼠标移入
+		onmouseout 			鼠标移出
+		onmousedown			鼠标按下事件
+		onmouseup			鼠标抬起事件
+		onmosemove			鼠标移动事件
+		onmousewheel/DOMMouseScroll			鼠标滚轮事件
+				*注：onmousewheel：详情见课件搜索
+		onchange			改变域中事件
+		onsubmit			提交按钮被点击事件
+		oninput				当value发生变化的时候不用失焦就直接触发
+		onfocus				聚焦（蓝亮）
+		onblur				失焦（默认的）
+
+		onscroll 			元素滚动条在滚动时触发
+		onresize 			浏览器被重置大小时候触发
+		onhashchange 		锚信息事件
+		onpopstate 			回退函数	window.onpopstate是popstate事件在window对象上的事件,激活状态的历史记录条目发生变化时
+		onchange 			--当表单元素内容改变的时候触发的事件 
+		ondblclick 			--双击
+		键盘事件：
+		onkeydown			键盘按下事件
+		onkeyup				键盘抬起事件
+		移动端事件：		
+		ontouchstart 		手指按下		侦听手指在手机屏幕上按下
+		ontouchmove			手指移动		侦听手指在手机屏幕上移动
+		ontouchend			手指抬起		侦听手指在手机屏幕上抬起
+
+
+		当用户操作浏览器页面的时候，会触发各种事件,这个时候如果 
+		对应的事件有绑定事件函数，那么就触发 
+		用户是被监听者 
+		浏览器是监听者
+
+		事件是元素本身自带的一个属性
+		<button id="btn">按钮</button>
+		console.dir(btn.onclick);
+事件绑定和（解除绑定）
+		事件绑定分三种
+		1.嵌入DOM
+		2.直接绑定事件（也就是传统的on事件）
+				 给某个元素绑多个事件前后会覆盖,触发的时候只会执行一次
+		*例：btn.onclick = function(){
+            alert(1);
+            //on事件解除绑定可直接onclick=null;
+            btn.onclick = null;
+				}
+		3.事件监听addEventListener()//可给同一个元素添加多次事件,不会被覆盖 
+			*注：给某个元素绑多个事件,触发的时候会执行绑定的次数 
+				移动端都要用事件绑定的形式去绑定事件函数。不可以用on事件
+		addEventListener(不带on的事件名,事件函数,是否捕获默认为false)	
+		removeEventListener()//解除点击事件 
+			*注：匿名函数不能从根源上解除绑定
+	事件冒泡（子级事件源到父级）
+			事件冒泡：当触发某个元素事件时,如果自己及祖先节点都绑定了同样的事件函数,那么会从下而上依次出发，直到window结束，这个过程叫冒泡过程 
+			从下而上依次出发同一个事件，直到window结束叫冒泡
+				*注：在同一个函数绑定的时候，前者覆盖后者
+	事件捕获（父级到子级事件源）
+			传统的事件绑定是不能监听到捕获. 
+			on事件没有捕获只有冒泡 
+			只有addEventListener才能监听捕获状态. 
+			捕获：自上而下window起到目标过程
+	事件流（事件模型）一共分3个阶段(先捕获再冒泡)
+			捕获阶段-->目标节点-->冒泡阶段 
+			正常顺序是先捕获再冒泡（到达目标点事件源节点代码写的顺序是一样的例如：先写冒泡就先出冒泡）
+	解决冒泡问题
+			阻止冒泡，其实是子孙级触发，不让祖先级触发，所以阻止冒泡要从源头下手（子孙级【目标阶段】）
+	传统的事件阻止冒泡
+		ev.cancelBubble = true;//不标准（但是所以浏览器都支持）
+		ev.stopPropagation();//是标准（但是不是所有浏览器都支持）
+	事件对象 event
+			当用户操作页面的时候，事件函数的第一个参数会记录下用户本次操作的细节信息.
+			*例：document.onclick = function(ev){
+				console.log(ev.clientX);//可打印每次鼠标点击点的坐标位置
+			   }
+on的ev.事件获取
+		ev.type			获取点击事件的类型		返回事件类型比如：click,onmousedown
+		ev.target		获取事件源				返回值为当前元素例如：课件搜索target有示例
+		ev.pageX/ev.pageY		获取当前事件横/纵向轴坐标 		
+		ev.screenX/ev.screenY		鼠标指针相对于显示器左上角的位置
+		ev.clientX/ev.clientY		鼠标指针相对于可视窗口左上角的位置
+		ev.offsetX/ev.offsetY		事件发生时鼠标距离事件源左上角的距离
+		ev.button					获取鼠标按键（左键,右键,滚轮）  		返回值：0为左键 1为滚轮 2为右键
+		ev.altKey/ev.shiftKey/ev.ctrlKey		键盘双击键 		返回布尔值
+		ev.keyCode					键盘onkeydown/onkeyup事键盘的键值			返回值：Unicode字符 比如回车：13
+		ev.code			侦听键盘按键的键值			返回值：上：ArrowUp 下：ArrowDown 左：ArrowLeft 右：ArrowRight
+		移动端ev事件	
+		ev.touches		当前在屏幕上的手指列表数 		表示当前跟踪的触摸操作的touch对象的数组。
+		ev.targetTouches		当前在元素上的手指列表数			特定于事件目标的Touch对象的数组
+		ev.changedTouches		触发当前事件的手指列表			表示自上次触摸以来发生了什么改变的Touch对象的数组。
+		ev.identifier			标识触摸的唯一ID
+		
+
+
 		
 		
 	git流程和命令大全
 		git版本控制工具（不用网络就可以进行版本控制）
 		github是代码托管、参与协作、交友的网站
-	git
+	git 分布式
+	首先建立github账号
+		先去 https://github.com/ 去申请自己的github账号 
+	
+	安装git 
+		https://git-scm.com/ 下载git并按照提示安装
+	安装好git后
+	1.创建key ssh密钥
 		
+
+	mongodb使用方法：
+	1.	需要安装node / mongoDB    https://www.mongodb.com/ 安装
+	启动数据库:
+		找到D:\MongoDB\Server\3.6\bin  shift + 右键单击-> 在此处打开窗口
+		.\mongod --dbpath=数据库存放的位置 --port=27017 
+	2.	使用npm install 安装依赖项
+	3.	npm run dev  运行服务
+	4.	在http://localhost:88 访问
+	
+	npm i nrm -g
+	nrm test  查看哪个速度快
+	nrm use cnpm  切换镜像
 	
 		
 		
@@ -286,7 +596,27 @@
 		
 		
 		
-		
+	React组件的生命周期
+			组件的生命周期可分成三个状态：
+					Mounting：已插入真实 DOM（只会执行一次）
+
+							constructor//只执行一次
+							componentWillMount()一上来新执行
+							componentDidMount()第一次渲染后调用
+
+					Updating：正在被重新渲染
+
+							componentWillReceiveProps()父级数据更新后被调用，这个方法在初始化render时不会被调用
+							shouldComponentUpdate(newProps,newState)主要做性能优化,比较子级数据和父级数据，
+											return true的时候表示子级组件数据更新时也同时更新父级数据
+											return false的时候表示子级组件数据更新时不同时更新父级数据
+									*注：两参
+
+					Unmounting：已移出真实 DOM
+							componentDidMount()
+			
+			componentWillUnmount()组件移除的时候立刻被调用，一般在切换路由的时候干的事
+			
 		
 		
 		
