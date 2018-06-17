@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+   
+    <section>
+<form>
+   账号： 
+<input type="text">
+
+密码：
+<input type="password">
+<button>
+登录
+</button>
+<br/>
+</form>
+-------------------添加账号--------------------
+<br/>
+<form id="adminLogin">
+添加的账号
+<input type="text" name="userName">
+密码：
+<input type="text" name="passw">
+<input type="submit" id="addSubmit">
+</form>
+<button id="renderBtn">
+    点击生成数据
+</button>
+<div id="formHtml">
+
+
+</div>
+
+
+
+    </section>
+    <script>
+        let adminLogin = document.getElementById('adminLogin')
+        let addSubmit = document.getElementById('addSubmit')
+        let renderBtn = document.getElementById('renderBtn')
+        let formHtml = document.getElementById('formHtml')
+        let dbName = 'userdb';
+        let version = 2;
+        let db;
+
+         
+        
+        //打开indexed_db数据库
+        let DBOpenRequest = window.indexedDB.open(dbName,version);
+        //当打开错误的时候报错
+        DBOpenRequest.onerror = function(ev){
+            console.log('打开错误')
+        }
+        //当数据库打开的时候就打印出数据库
+        DBOpenRequest.onsuccess=function(ev){
+         
+            db = ev.target.result;
+            // console.log('db:%o',db)
+          
+            
+        }
+        DBOpenRequest.onupgradeneeded = function(ev){
+         let db = ev.target.result;
+         db.onerror = function(event) {
+                logError('数据库打开失败');
+            };
+
+         var objectStore = db.createObjectStore(dbName, { 
+                keyPath: 'id',
+                autoIncrement: true
+            });
+
+             objectStore.createIndex('id', 'id', {
+                unique: true    
+            });
+            objectStore.createIndex('userName', 'userName');
+            objectStore.createIndex('passw', 'passw');
+
+        }
+        renderBtn.onclick = function(){
+            // let newData = renderDate();
+            // console.log(newData.length)
+            // newData.forEach(e=>{
+            //     console.log(e)
+
+            // })
+            // console.log(renderDate())
+            // renderDate();
+
+
+        }
+        function getDataByIndexName(data,userName){
+            let str = '';
+            var objectStore = db.transaction([dbName]).objectStore(dbName);
+            var index = objectStore.index(data)
+          index.get(userName).onsuccess = function (e) {
+                var student = e.target.result;
+                str = student.id+'--'+student.userName+'--'+student.passw;
+                // SetPrStr(str)
+               
+                return str
+                // console.log(str)
+              }
+             
+            //   console.log(str)
+            //   return aaa;
+
+             
+        }
+        // function SetPrStr(prStr){
+        //     console.log(prStr)
+
+        // }
+
+        setTimeout(function(){
+        //  getDataByIndexName('userName','ww');
+             show();
+     
+        },1000)
+      
+        function show(){
+            var html = ''
+            var objectStore = db.transaction([dbName]).objectStore(dbName);
+           
+            // var NdataArr = []
+            objectStore.openCursor().onsuccess = function(ev){
+               
+                var Ndata = ev.target.result;
+                if(Ndata){
+                  
+                //    NdataArr.push(Ndata.value)
+                console.log(Ndata.value.userName)
+                html = html + Ndata.value.userName;
+                formHtml.innerHTML = html;
+                   Ndata.continue()
+                }else{
+                 
+                    formHtml.innerHTML = html
+                }
+            }
+     
+            // return NdataArr;
+        }
+        function del(id){
+            let transaction = db.transaction([dbName],"readwrite").objectStore(dbName)
+            let objectStoreRequest = objectStore.delete(id);
+        }
+
+        function add(obj){
+            let transaction = db.transaction([dbName],"readwrite").objectStore(dbName).add(obj);
+            show();
+        }
+        //给form表单下的submit按钮添加点击事件
+        adminLogin.addEventListener('submit',function(ev){
+            //清除默认行为
+            event.preventDefault();    
+            //声明一个对象，此对象是为了收集input的value值
+            let formData = {};
+            //改变this的指向，把当前form表单的this分别指向他下面的input框下
+            [].slice.call(this.querySelectorAll('input')).forEach(function(e){
+               //判断当前的input表单下是否有自定义name值
+                if(e.name){
+                    //如果有name则把当前的name值写入到formData对象的key着把当前的input的value着写入到对象的value
+                    formData[e.name] = e.value;
+                }
+            })
+           //执行add函数 把收集到的formDate对象写入到indexed_DB数据库中
+            add(formData)
+
+        })
+      
+
+    
+    
+    </script>
+</body>
+</html>
