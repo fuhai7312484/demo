@@ -619,7 +619,10 @@ on的ev.事件获取
 			
 		
 		
-		
+	indexed_db数据
+	let dbName = 'dbName'
+	
+
 		
 		
 		
@@ -633,9 +636,186 @@ on的ev.事件获取
 		focus() 文本框聚焦
 		
 		
-		
-		
-		
+	vue详解
+		http://cn.vuejs.org/
+		MVVM框架
+		单向数据流（数据只能父传子）
+		双向数据绑定、轻
+		view视图操作model数据---> 同时model数据操作view视图
+
+		v-  vue指令
+		双花括号{{数据}}
+
+
+		1、new Vue({
+			el:'#root',
+			data：{
+				
+			}
+		})
+	v-if="数据==条件"
+			如果条件成立则显示
+	v-else-if="数据==条件"
+	v-else
+		必须紧跟着v-if
+
+
+	v-for 不但能循环数组还可以循环对象
+		v-for="val in arr" 遍历数组
+		v-for="key in obj" 遍历对象
+
+	v-text="数据"
+		把数据里的html直接输出出来，等同与innerText
+	v-html
+		把html标签直接当做标签转换出来 再输出
+	
+	v-on:click="事件函数" 也可以写做 @click="函数名";
+	 事件函数必须包在methods下，它是一个对象
+
+
+	按键修饰符	
+	回车 .13
+		@keyup.13="事件"
+
+	阻止冒泡 .stop
+			@click.stop="fn";
+	阻止默认行为 .prevent
+	事件只触发一次 .oenc
+	
+	v-bind 一般用在操作行间属性
+
+	v-model 
+		*专门用来操作表单的
+			
+	计算属性必须写在computed里面
+			methods 里面的方法调用一次执行一次
+			computed 调多少次都只执行一次
+	watch侦听器 watch本身是浅监听只监听到[{name:'el',id:0,checked:true},{name:'el',id:0,checked:true}]对象级别  如果想要监听对象里面的数据变化 需要深监听
+			第一个handler：其值是一个回调函数。即监听到变化时应该执行的函数。
+			第二个是deep：其值是true或false；确认是否深入监听。（一般监听时是不能监听到对象属性值的变化的，数组的值变化可以听到。）
+	Vue组件 component  
+		Vue.component(组件名称,{参数对象}),必须写在new Vue的上面
+			*格式： Vue.component(my-component-name,{
+				//模板文件
+				template：'<div>这里是模板</div>',
+				//数据
+				*注 子组件的data要为一个函数返回一个对象,对象上挂数据
+				data(){
+					return {
+						val:'数据';
+					}
+
+				}
+				//on事件行为
+				methods:{
+					on_click(){
+					on事件行为
+					}
+				},
+				computed:{
+					//计算属性
+					getCom(){
+						//逻辑运算
+					},
+				watch:{
+					//监听器
+
+				}
+				}
+			})
+	vue父组件给子传递 是通过给子组件添加属性
+		父	:属性名 = "数据"
+		子  子组件通过props属性去接收父级传过来的值 *注 props为一个数字
+	vue子传父数据 
+		1、	父级定义一个事件函数
+		2、把这个函数传给子级
+			给子级身上加一个自定义事件
+			 @change = "父级事件函数"
+		3.子级调用
+		this.$emit(myEvent,参数对象{,})
+	任意平行组件之间互传
+
+	vue路由
+
+	vue 生命周期
+			beforeCreate(){
+				console.log('初始化之前');//一般挂loading
+			}
+			created(){
+				console.log('初始化之后');//请求数据
+			}
+
+			beforeMount(){
+				console.log('组件挂载')//关loading
+			}
+
+			mounted(){
+			console,log('DOM重新渲染之后')
+			}
+
+			beforeUpdate(){
+				console.log('数据在修改的时候，页面DOM还没更新渲染');
+			}
+
+			updated(){
+				console.log('对比渲染之后');
+			}
+	node
+		node.js 是一个基于 Chrome v8引擎的javaScript 运行环境	
+		//设置请求方式
+		const http = require('http')
+		//创建服务器
+		const server = http.createServer((request,response)=>{
+				//request: 请求   浏览器发给服务器
+				//response: 响应 服务器发给浏览器
+
+		})
+		//获取到当前用户输入的路径
+		fs.readFileSync(文件路径,编码)
+
+		//新建文件 在public下新建一个3.txt 第二个参数是写入的内容
+		fs.writeFile('文件路径/文件名','写入的内容',function(err){
+			回调函数
+		})
+		//删除文件
+		fs.unlink('文件路径',function(err){
+			回调函数
+		})
+		//创建文件夹
+		fs.mkdir('创建的路径',function(err){
+			回调函数
+		})
+		//删除文件夹
+		fs.rmdir(文件路径,function(err){
+			console.log(err);
+		})
+		//改变文件夹名称
+		fs.rename(oldname,newname,function(err){
+			回调函数
+		})
+		//获取文件信息
+		fs.fs.start(文件路径, function(err,stats){
+			console.log(stats);
+			console.log("读取文件信息成功");
+		})
+		//打开文件
+		fs.open('文件路径')
+		//关闭文件
+		fs.close(fd, callback)
+
+		详情：https://www.cnblogs.com/mangoxin/p/5664615.html
+
+	接口post请求
+	const server = http.createServer((req,res)=>{
+		//request: 请求   浏览器发给服务器
+		//response: 响应 服务器发给浏览器
+
+		req.on('data',(data)=>{
+
+		})
+		req.end()
+
+})
 		
 	</body>
 </html>
